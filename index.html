@@ -1,0 +1,1304 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="日本語ノート">
+<meta name="theme-color" content="#b8473a">
+<title>日本語ノート</title>
+<style>
+:root{--bg:#f7f3ec;--card:#fffdf9;--ink:#26221f;--mute:#776f68;--line:#e6ddd0;--accent:#b8473a;--accent2:#f6e3df;--ok:#2f7a4a;--ok2:#e3f2e7;--ng:#b23a2a;--ng2:#fbe5e0;--warn:#9a6a12;--warn2:#fbf0d9;--blue:#2d5f8a;--blue2:#e2edf6;--onacc:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#171513;--card:#211e1b;--ink:#ece6df;--mute:#a59d95;--line:#37312c;--accent:#e58a7c;--accent2:#3a2622;--ok:#7fcf98;--ok2:#1d3325;--ng:#f08f7f;--ng2:#3b221e;--warn:#e6bb5c;--warn2:#3a2f19;--blue:#8ab9e3;--blue2:#1d2b38;--onacc:#1d1210}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"PingFang TC","Hiragino Sans","Noto Sans TC","Noto Sans JP",sans-serif;-webkit-text-size-adjust:100%}
+.jp,ruby{font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","PingFang TC",sans-serif}
+rt{font-size:.55em;color:var(--mute)}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(env(safe-area-inset-top) + 10px) 16px 8px;border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:center;justify-content:space-between;max-width:680px;margin:0 auto}
+h1{font-size:19px;margin:0;letter-spacing:.02em}
+h1 small{font-size:12px;color:var(--mute);font-weight:400;margin-left:6px}
+h2{font-size:15px;margin:0 0 10px}
+.sec-h{font-size:14px;color:var(--mute);margin:18px 0 8px;font-weight:600}
+.lt{font-size:22px;margin:10px 0 0}
+main{padding:14px 16px calc(100px + env(safe-area-inset-bottom));max-width:680px;margin:0 auto}
+select,input,textarea,button{font:inherit;color:inherit}
+select,input[type=text],input[type=url],input[type=password],input[type=search],textarea{width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:16px}
+textarea{min-height:70px;resize:vertical}
+input[type=file]{font-size:14px;max-width:100%}
+label{display:block;font-size:13px;color:var(--mute);margin:12px 0 4px}
+label.ck{display:flex;gap:8px;align-items:center;color:var(--ink);font-size:15px;margin:6px 0}
+.cks{display:grid;gap:2px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav button{flex:1;border:0;background:none;padding:7px 0 9px;font-size:11px;color:var(--mute);display:flex;flex-direction:column;align-items:center}
+nav .i{font-size:20px;position:relative;line-height:1.3}
+nav button.on{color:var(--accent);font-weight:600}
+.nb{position:absolute;top:-3px;left:16px;background:var(--ng);color:#fff;border-radius:9px;font-size:10px;padding:0 5px;line-height:16px;font-weight:600}
+.iconbtn{border:0;background:none;font-size:22px;padding:4px}
+.btn{border:0;border-radius:10px;padding:11px 14px;background:var(--accent);color:var(--onacc);font-weight:600;cursor:pointer;text-align:center}
+.btn:disabled{opacity:.4}
+.btn.ghost{background:var(--accent2);color:var(--accent)}
+.btn.bad{background:var(--ng2);color:var(--ng)}
+.btn.good{background:var(--ok2);color:var(--ok)}
+.btn.sm{padding:6px 11px;font-size:14px}
+.full{width:100%;display:block}
+.filebtn{display:block;margin:0;font-size:16px}
+.filebtn input{display:none}
+.row{display:flex;gap:8px;align-items:center}
+.row>*{flex:1;min-width:0}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.box.ai{border-style:dashed}
+.okbox{background:var(--ok2);border-color:transparent}
+.ngbox{background:var(--ng2);border-color:transparent}
+.warnbox{background:var(--warn2);border-color:transparent}
+.muted{color:var(--mute);font-size:14px}
+.small{font-size:13px}
+.center{text-align:center}
+.pre{white-space:pre-wrap;word-break:break-word}
+.bad{color:var(--ng)}.ok{color:var(--ok)}.ng{color:var(--ng)}.okc{color:var(--ok)}
+.sec{margin-top:10px}
+.big{font-size:42px;font-weight:700;color:var(--accent)}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.stat b{display:block;font-size:24px;color:var(--accent);line-height:1.2}
+.stat span{font-size:12px;color:var(--mute)}
+.stat.errs b{color:var(--ng)}
+.lesson{cursor:pointer}
+.lname{font-size:17px}
+.badge{display:inline-block;font-size:12px;border-radius:6px;padding:1px 7px;margin:2px 2px 0 0;white-space:nowrap}
+.st-complete{background:var(--ok2);color:var(--ok)}.st-partial{background:var(--warn2);color:var(--warn)}.st-unverified{background:var(--blue2);color:var(--blue)}.st-pending{background:var(--line);color:var(--mute)}
+.tag{display:inline-block;font-size:12px;background:var(--line);color:var(--mute);border-radius:6px;padding:1px 7px;margin:3px 4px 0 0}
+.tag.ai{background:var(--blue2);color:var(--blue)}.tag.mine{background:var(--ok2);color:var(--ok)}.tag.l{background:var(--warn2);color:var(--warn)}
+.tp{display:inline-block;font-size:11px;color:var(--accent);border:1px solid var(--accent);border-radius:5px;padding:0 5px;margin-right:6px;vertical-align:2px}
+details.item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+details.item summary,details.prow summary{list-style:none;padding:10px 12px;cursor:pointer}
+details summary::-webkit-details-marker{display:none}
+details.item .body,details.prow .body{padding:0 12px 12px;border-top:1px solid var(--line)}
+.ttl{font-size:17px;line-height:1.9}
+.sub{font-size:14px;color:var(--mute)}
+.spk{border:0;background:none;padding:0 4px;font-size:17px;cursor:pointer;flex:0 0 auto !important}
+.src .pre{margin-top:6px}
+.seg{display:flex;background:var(--line);border-radius:10px;padding:3px;gap:3px;margin-bottom:10px}
+.seg button{flex:1;border:0;background:none;border-radius:8px;padding:7px 4px;font-size:14px;color:var(--mute)}
+.seg button.on{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.seg.sm{margin:6px 0 0}.seg.sm button{padding:4px;font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 11px;font-size:13px}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--onacc)}
+.progress{height:4px;background:var(--line);border-radius:2px;margin-bottom:10px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent)}
+.qbox{padding:18px 16px}
+.q{font-size:21px;line-height:2.1;word-break:break-word}
+.big-jp{font-size:40px;text-align:center}
+.zh{color:var(--mute);margin-top:4px}
+.ctx{background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:15px;line-height:1.8}
+input.blank{display:inline-block;width:4.2em;padding:2px 6px;margin:0 3px;font-size:20px;text-align:center;border:0;border-bottom:2px solid var(--accent);border-radius:6px 6px 0 0;background:var(--accent2);vertical-align:middle}
+.blankres{display:inline-block;padding:0 6px;margin:0 2px;border-radius:6px;font-weight:600}
+.blankres.ok{background:var(--ok2)}.blankres.ng{background:var(--ng2);text-decoration:line-through}
+.blankfix{display:inline-block;padding:0 6px;border-radius:6px;background:var(--ok2);color:var(--ok);font-weight:600;margin-right:2px}
+.ansin{margin-top:12px;font-size:18px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:14px}
+.opt{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:12px 8px;font-size:18px;cursor:pointer}
+.opt.sel{border-color:var(--accent);background:var(--accent2);font-weight:600}
+.opt.right{border-color:var(--ok);background:var(--ok2);color:var(--ok);font-weight:600}
+.opt.wrong{border-color:var(--ng);background:var(--ng2);color:var(--ng);text-decoration:line-through}
+.opt:disabled{cursor:default}
+.wrongtxt{color:var(--ng);text-decoration:underline wavy var(--ng);text-underline-offset:5px;text-decoration-thickness:1px}
+.aibox{background:var(--blue2);color:var(--ink);border-radius:10px;padding:8px 10px;font-size:14px}
+.bar{display:flex;align-items:center;gap:8px;margin:7px 0;font-size:14px;cursor:pointer}
+.bar .n{width:5em;flex:0 0 5em}
+.bar .t{flex:1;height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+.bar .t i{display:block;height:100%;background:var(--ng);border-radius:5px}
+.bar .c{width:24px;text-align:right;font-weight:600}
+.bar .acc{width:40px;text-align:right;color:var(--mute);font-size:13px}
+.mist .jp{font-size:17px}
+.tutor.done{opacity:.7}
+.mcard{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer}
+.mn{font-size:22px;color:var(--accent);font-weight:700;line-height:1.2}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.th{display:flex;flex-direction:column;align-items:center;font-size:11px;color:var(--mute)}
+.th img{width:70px;height:90px;object-fit:cover;border:1px solid var(--line);border-radius:6px;background:#fff}
+.warnline{color:var(--warn);font-size:13px;margin-top:4px}
+.errline{color:var(--ng);font-size:13px;margin-top:6px;font-weight:600}
+.dupline{background:var(--warn2);border-radius:8px;padding:6px 8px;font-size:13px;margin-top:8px}
+details.prow{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:10px;margin-bottom:8px}
+details.prow summary{font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prow.st-err{border-left-color:var(--ng)}.prow.st-skip,.prow.st-off{border-left-color:var(--line);opacity:.65}.prow.st-sim,.prow.st-merge{border-left-color:var(--warn)}
+.pst{font-size:11px;font-weight:600;margin-right:6px;padding:1px 6px;border-radius:5px;background:var(--ok2);color:var(--ok)}
+.st-err .pst{background:var(--ng2);color:var(--ng)}.st-skip .pst,.st-off .pst{background:var(--line);color:var(--mute)}.st-sim .pst,.st-merge .pst{background:var(--warn2);color:var(--warn)}
+.stline{padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+.stline:last-child{border:0}
+.mback{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.mbox{background:var(--bg);width:100%;max-width:680px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom))}
+#toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:30;max-width:90%;text-align:center}
+#toast.show{opacity:1}
+a{color:var(--blue);word-break:break-all}
+ol{padding-left:20px;margin:8px 0}
+pre.pre{font-family:inherit;margin:8px 0}
+</style>
+</head>
+<body>
+<header><div class="top"><h1>日本語ノート<small>錯題・教材・練習</small></h1><button class="iconbtn" onclick="openView('settings')" aria-label="設定">⚙️</button></div></header>
+<main id="main"></main>
+<nav id="nav"></nav>
+<div id="modal"></div>
+<div id="toast"></div>
+<script>
+/* ===== 預載教材（由 Claude 從您的資料夾整理）===== */
+const SEED_VERSION = 1;
+const SEED = (() => {
+  const V = (id, term, reading, meaning, cat, lesson, sourceId, extra) => Object.assign({ id, type: 'vocab', term, reading, meaning, example: '', note: '', tags: [], category: cat, lesson, sourceId, origin: 'teacher', aiAdded: [] }, extra || {});
+  const G = (id, term, meaning, example, note, cat, lesson, sourceId, extra) => Object.assign({ id, type: 'grammar', term, reading: '', meaning, example, note, tags: [], category: cat, lesson, sourceId, origin: 'teacher', aiAdded: [] }, extra || {});
+  const Q = (id, kind, o) => Object.assign({ id, kind, context: '', zh: '', prompt: '', options: [], answers: [], explain: '', category: '其他', lesson: '', sourceId: '', origin: 'teacher', answerFrom: 'material' }, o);
+
+  const sources = [
+    { id: 'src-l12', kind: 'teacher', title: '日文課第1-2堂（講義、第1堂助詞篇、作業）', lesson: '第1-2堂', file: '1老師提供的上課教材/1~2/（4 個檔案）', url: '', status: 'partial', note: '主講義與第1堂助詞篇大多是圖片，尚未匯入。資料夾名稱「1~2」中的「~」讓系統無法直接讀取檔案，建議改名為「1-2」。目前只匯入第2堂作業的文字部分（翻譯題無老師解答，參考答案為 AI 提供）。' },
+    { id: 'src-l3', kind: 'scan', title: '日文課第3堂講義「私の生活」', lesson: '第3堂', file: '1老師提供的上課教材/3/日文課第3堂.pdf', url: '', status: 'unverified', note: '圖片講義，由 Claude 看圖整理單字、文法與例句。中文意思與文法說明為 AI 補充；講義上的手寫筆記未匯入。' },
+    { id: 'src-l3hw', kind: 'teacher', title: '日文課第3堂作業1018', lesson: '第3堂', file: '1老師提供的上課教材/3/日文課第3堂作業1018.pdf', url: '', status: 'complete', note: '文字版，含老師參考答案，已完整匯入。練習二第1題的參考答案疑似筆誤，已列入家教清單。' },
+    { id: 'src-l3tbl', kind: 'scan', title: '第3堂量詞表（訂正）、年齡表', lesson: '第3堂', file: '1老師提供的上課教材/3/量詞表（訂正）.pdf、年齡表.pdf', url: '', status: 'pending', note: '圖片表格，尚未匯入。可用「匯入 → PDF／圖片」補入。' },
+    { id: 'src-l56', kind: 'teacher', title: '日文課第5-6堂教材（含作業）1101', lesson: '第5-6堂', file: '1老師提供的上課教材/5-6/日文課第5-6堂課程教材(含作業)1101.pdf', url: '', status: 'partial', note: '文字版講義。單字表、文法說明、作業、閱讀題與解答已匯入；會話練習與綜合會話未匯入。' },
+    { id: 'src-l56s', kind: 'scan', title: '日文助詞分類對照表（第5-6堂補充）', lesson: '第5-6堂', file: '1老師提供的上課教材/5-6/日文課第5-6堂課程補充教材1101.pdf', url: '', status: 'unverified', note: '圖片表格，由 Claude 看圖整理，請對照原檔確認。' }
+  ];
+
+  const L56 = '第5-6堂', S56 = 'src-l56';
+  const items = [
+    // 第2堂
+    G('g-l2-suki', '〜が好きです／好きじゃないです／嫌いです', '表達喜歡與討厭。語氣：好きです（一般肯定）→ 好きじゃないです（一般否定）→ 嫌いです（強烈否定）。', 'スポーツが好きです。（我喜歡運動）\nスポーツが好きじゃないです。（我不喜歡運動）\nスポーツが嫌いです。（我討厭運動）', '「嫌い」語氣很強，平常說不喜歡多用「好きじゃないです」。', '句型', '第1-2堂', 'src-l12'),
+
+    // 第3堂 單字（圖片講義，中文為 AI 補充）
+    ...[
+      ['ベッド', '', '床'], ['机', 'つくえ', '書桌'], ['本棚', 'ほんだな', '書架、書櫃'], ['電気', 'でんき', '電燈；電'], ['窓', 'まど', '窗戶'], ['植物', 'しょくぶつ', '植物'], ['猫', 'ねこ', '貓'], ['テレビ', '', '電視'],
+      ['父', 'ちち', '（自己的）父親'], ['母', 'はは', '（自己的）母親'], ['兄', 'あに', '（自己的）哥哥'], ['姉', 'あね', '（自己的）姊姊'], ['弟', 'おとうと', '弟弟'], ['妹', 'いもうと', '妹妹'], ['祖父', 'そふ', '（自己的）祖父'], ['祖母', 'そぼ', '（自己的）祖母'],
+      ['電車', 'でんしゃ', '電車'], ['バス', '', '公車、巴士'], ['車', 'くるま', '汽車'], ['スーパー', '', '超市'], ['りんご', '', '蘋果'], ['バナナ', '', '香蕉'], ['牛乳', 'ぎゅうにゅう', '牛奶'], ['買い物', 'かいもの', '購物（名詞）']
+    ].map(([t, r, m], i) => V('v-l3-' + i, t, r, m, '單字', '第3堂', 'src-l3', { origin: 'teacher', aiAdded: ['meaning'] })),
+    G('g-l3-aru', 'あります・います（有／在）', 'あります：無生命的東西「有／在」；います：人或動物「有／在」。', '机の上に本があります。（桌上有書）\n部屋に猫がいます。（房間裡有貓）', '', '句型', '第3堂', 'src-l3', { aiAdded: ['meaning'] }),
+    G('g-l3-ichi', '位置詞：〜の上・下・隣・中・前・後ろ', '表示位置：上面、下面、旁邊、裡面、前面、後面。句型：〔地點〕の〔位置〕に〔東西〕があります。', 'ベッドの下にかばんがあります。（床底下有包包）', '', '句型', '第3堂', 'src-l3', { aiAdded: ['meaning'] }),
+    G('g-l3-kazoku', '人數〜人・年齡〜歳・家人的說法', '說明家裡有幾個人、幾歲。', '家族は4人です。（我家有四個人）\n母は45歳です。（媽媽45歲）\n弟が1人います。（我有一個弟弟）', '介紹自己的家人用 父・母・兄・姉；稱呼別人的家人或直接叫自己家人時用 お父さん・お母さん 等。', '句型', '第3堂', 'src-l3', { aiAdded: ['meaning', 'note'] }),
+    G('g-l3-iku', '行く・来る・帰る＋へ（移動方向）', '「へ」表示移動的方向。', 'スーパーへ行きます。（去超市）', '', '助詞', '第3堂', 'src-l3', { aiAdded: ['meaning'] }),
+    G('g-l3-kazu', '數量（〜つ・〜本・〜円）、いくら・ください', '購物時說數量、問價錢、說「請給我」。', 'りんごを3つください。（請給我三個蘋果）\nこれはいくらですか。（這個多少錢？）', '', '量詞', '第3堂', 'src-l3', { aiAdded: ['meaning'] }),
+
+    // 第5-6堂 單字
+    ...[
+      ['も', '也、同樣'], ['と', '和、與'], ['から～まで', '從～到～'], ['や', '～和～等'], ['か', '嗎、或者'], ['の', '的'], ['ね', '呢、呀（尋求認同或確認）'], ['よ', '喔、哦（告知、提醒）'], ['しか～ない', '只有～、僅僅～'], ['でも', '即使～也、～之類、但是（依語境而定）']
+    ].map(([t, m], i) => V('v-l56-p' + i, t, '', m, '助詞', L56, S56)),
+    ...[
+      ['友達', 'ともだち', '朋友'], ['家族', 'かぞく', '家人、家庭'], ['先生', 'せんせい', '老師'], ['学生', 'がくせい', '學生'], ['学校', 'がっこう', '學校'], ['会社員', 'かいしゃいん', '公司職員'], ['会社', 'かいしゃ', '公司'], ['コーヒー', '', '咖啡'], ['紅茶', 'こうちゃ', '紅茶'], ['水', 'みず', '水'], ['パン', '', '麵包'], ['ケーキ', '', '蛋糕'], ['映画館', 'えいがかん', '電影院'], ['図書館', 'としょかん', '圖書館'], ['公園', 'こうえん', '公園'], ['駅', 'えき', '車站'], ['病院', 'びょういん', '醫院'], ['店', 'みせ', '商店'], ['仕事', 'しごと', '工作'], ['休み', 'やすみ', '休息、休假'], ['午前', 'ごぜん', '上午'], ['午後', 'ごご', '下午']
+    ].map(([t, r, m], i) => V('v-l56-n' + i, t, r, m, '單字', L56, S56)),
+    V('v-l56-n99', 'バス停', 'バスてい', '巴士站', '單字', L56, S56, { aiAdded: ['reading'] }),
+    ...[
+      ['どう', '怎麼樣'], ['どの', '哪個'], ['どこ', '哪裡'], ['どれ', '哪一個'], ['どちら', '哪一個、哪一邊（較禮貌）'], ['どっち', '哪一個、哪一邊'], ['どなた', '哪一位（較禮貌）'], ['どんな', '怎麼樣的'], ['いつ', '什麼時候'], ['だれ', '誰']
+    ].map(([t, m], i) => V('v-l56-w' + i, t, '', m, '疑問詞', L56, S56)),
+
+    // 第5-6堂 文法
+    G('g-l56-mo', '「も」也', '接續：名詞＋も。表示與已知資訊相同。「も」會取代同位置的「は」或「が」。', '私も学生です。（我也是學生）\n日曜日も働きます。（星期日也工作）', '私は学生です。→ 私も学生です。', '助詞', L56, S56),
+    G('g-l56-to', '「と」和、一起、以及', 'A：人物＋と＋動詞（和…一起）；B：名詞A＋と＋名詞B（明確列出項目）。', '家族と旅行します。（和家人旅行）\nりんごとバナナを買います。（買蘋果和香蕉）', '想表達「……等等」時用「や」。', '助詞', L56, S56),
+    G('g-l56-kara', '「から・まで」從……到……', '「から」起點、「まで」終點；可用於時間或地點，也可分開使用。', '9時から5時まで働きます。（從九點工作到五點）\n東京から大阪まで行きます。（從東京到大阪）', '「から」單獨使用時也可能表示「因為…所以」，要看上下文。', '助詞', L56, S56),
+    G('g-l56-ya', '「や」……和……等等', '接續：名詞A＋や＋名詞B（＋など）。只舉部分例子，暗示還有其他。', 'りんごやバナナなどを買います。（買蘋果、香蕉等等）', 'と＝明確列出全部；や＝舉例。', '助詞', L56, S56),
+    G('g-l56-ka', '「か」疑問、選擇', 'A：句子＋か（疑問）；B：名詞A＋か＋名詞B（A還是B）。', '学生ですか。（你是學生嗎？）\nコーヒーか紅茶を飲みます。（喝咖啡或紅茶）', '', '助詞', L56, S56),
+    G('g-l56-no', '「の」所屬、修飾名詞', '名詞＋の＋名詞，表示所屬或補充說明。', '日本語の先生です。（是日文老師）', '', '助詞', L56, S56),
+    G('g-l56-ne', '「ね」尋求認同、確認', '句子＋ね。用於雙方都能觀察到或知道的事，或確認資訊。', 'いい天気ですね。（天氣真好呢）\n明日は休みですね。（明天放假，對吧？）', 'ね＝希望對方認同；よ＝告訴對方資訊。', '助詞', L56, S56),
+    G('g-l56-yo', '「よ」告知、提醒', '句子＋よ。把資訊告訴對方或提醒對方注意。', 'このケーキはおいしいですよ。（這個蛋糕很好吃喔）\nあそこに駅がありますよ。（那邊有車站喔）', '', '助詞', L56, S56),
+    G('g-l56-shika', '「しか～ない」只有……', '名詞＋しか＋否定形。強調數量或範圍有限。', '100円しかありません。（只有100日圓）\n水しか飲みません。（只喝水）', '後面必須用否定形：○100円しかありません ×100円しかあります', '助詞', L56, S56),
+    G('g-l56-demo', '「でも」……之類的（輕鬆的建議）', '名詞＋でも，舉一個可考慮的選項，常用於邀請或提議。', 'お茶でも飲みませんか。（要不要喝個茶之類的？）', 'お茶を飲みませんか＝要不要喝茶；お茶でも飲みませんか＝語氣更隨意。', '助詞', L56, S56),
+    G('g-l56-futsu', '動詞普通形（辞書形・ない形・た形・なかった形）', '用於朋友、家人之間的對話，也常出現在文章與文法句型中。', '毎日働く。（每天工作）\n日曜日は働かない。（星期天不工作）\n昨日働いた。（昨天工作了）\n昨日は働かなかった。（昨天沒工作）', '', '動詞變化', L56, S56),
+    G('g-l56-masu', '動詞ます形（ます・ません・ました・ませんでした）', '較有禮貌的說法。', '毎日働きます。／日曜日は働きません。／昨日働きました。／昨日は働きませんでした。', '動詞句不需要再加「です」：○日本語を勉強します ×日本語を勉強です。（「食べるんです」是另一種文法）', '動詞變化', L56, S56),
+    G('g-l56-read', '閱讀：私の週末', '我是公司職員。星期一到星期五工作，工作時間是九點到六點。星期六和朋友去購物，在超市買麵包、牛奶、蘋果等等。下午在咖啡廳喝咖啡。朋友也喜歡咖啡。星期日在家休息，學日文。下週和朋友去電影院。', '私は会社員です。月曜日から金曜日まで働きます。仕事は9時から6時までです。土曜日は友達と買い物に行きます。スーパーでパンや牛乳、りんごなどを買います。午後はカフェでコーヒーを飲みます。友達もコーヒーが好きです。\n日曜日は家で休みます。日本語を勉強します。来週は友達と映画館へ行きます。', '', '閱讀', L56, S56, { type: 'sentence' }),
+
+    // 助詞分類表（圖片）
+    G('g-l56s-bunrui', '助詞五大分類', '格助詞（が・を・に・へ・と）：名詞與其他詞的關係\n係助詞（は・も）：提示主題、強調\n副助詞（だけ・しか）：限定、程度\n接續助詞（て・から）：連接句子、原因\n終助詞（か・ね）：句尾語氣', '友達が来ました。本を読みます。学校に行きます。東京へ行きます。友達と行きます。', '', '助詞', L56, 'src-l56s'),
+    G('g-l56s-dake', '「だけ」只有、僅', '名詞＋だけ。和「しか」不同，後面用肯定形。', '水だけ飲みます。（只喝水）', 'しか＋否定形：水しか飲みません。', '助詞', L56, 'src-l56s', { aiAdded: ['note'] }),
+    G('g-l56s-te', '接續助詞「て」連接動作', '連接前後動作、形容詞、名詞。', '行ってきます。（我走了〔我出門了〕）', '', '助詞', L56, 'src-l56s')
+  ];
+
+  const F = '（　）';
+  const qs = [
+    // 第2堂作業 翻譯（無老師解答）
+    ...[['我喜歡拉麵', ['私はラーメンが好きです。', 'ラーメンが好きです。']], ['我不喜歡壽司', ['私は寿司が好きじゃないです。', '寿司が好きじゃないです。', '私はすしが好きじゃないです。']], ['我討厭運動', ['私はスポーツが嫌いです。', '私は運動が嫌いです。', 'スポーツが嫌いです。', '運動が嫌いです。']]]
+      .map(([zh, a], i) => Q('q-l2-' + (i + 1), 'translate', { zh, prompt: '翻成日文', answers: a, explain: '〜が好きです（喜歡）／〜が好きじゃないです（不喜歡）／〜が嫌いです（討厭，語氣強）。', category: '句型', lesson: '第1-2堂', sourceId: 'src-l12', answerFrom: 'ai' })),
+
+    // 第3堂作業 練習一
+    ...[['部屋' + F + 'ベッドがあります。', '房間裡有一張床。', ['に', 'で'], 'に', '「に」表示東西存在的地點（〜に〜があります）。'],
+      ['机の上' + F + '本があります。', '桌子上有書。', ['に', 'へ'], 'に', '存在的地點用「に」；「へ」是移動的方向。'],
+      ['電車' + F + '学校へ行きます。', '搭電車去學校。', ['に', 'で'], 'で', '「で」表示手段、交通工具。'],
+      ['スーパー' + F + 'パンを買います。', '在超市買麵包。', ['に', 'で'], 'で', '動作發生的地點用「で」。'],
+      ['家' + F + '母がいます。', '媽媽在家。', ['に', 'で'], 'に', '人或動物存在的地點用「に」（〜に〜がいます）。'],
+      ['これ' + F + 'ください。', '請給我這個。', ['が', 'を'], 'を', '「〜をください」＝請給我〜。'],
+      ['家族は' + F + 'ですか。', '你家有幾個人？', ['何人', '何時'], '何人', '何人（なんにん）＝幾個人；何時（なんじ）＝幾點。']
+    ].map(([p, zh, o, a, ex], i) => Q('q-l3-' + (i + 1), 'choice', { prompt: p, zh, options: o, answers: [a], explain: ex, category: i === 6 ? '疑問詞' : '助詞', lesson: '第3堂', sourceId: 'src-l3hw' })),
+    // 練習二
+    Q('q-l3-8', 'choice', { prompt: 'りんごを' + F + '買いました。', zh: '買了1個蘋果', options: ['ひとり', 'ひとつ', 'いちまい'], answers: ['ひとつ'], explain: '「ひとつ」用於一般物品；「ひとり」用於人；「いちまい」用於薄而平的東西。⚠️ 老師參考答案寫「①ひとり」，與題意不符，疑為筆誤，已列入家教清單。', category: '量詞', lesson: '第3堂', sourceId: 'src-l3hw', answerFrom: 'ai' }),
+    Q('q-l3-9', 'choice', { prompt: '今日、' + F + 'は100歳になりました。', zh: '今天奶奶滿100歲了', options: ['あばさん', 'おばあさん', 'いもうと'], answers: ['おばあさん'], explain: 'おばあさん＝奶奶、外婆；いもうと＝妹妹。選項「あばさん」可能是「おばさん（阿姨）」的筆誤。', category: '單字', lesson: '第3堂', sourceId: 'src-l3hw' }),
+    Q('q-l3-10', 'choice', { prompt: '教室に学生が' + F + 'います。', zh: '教室裡有3名學生', options: ['さんにん', 'さんだい', 'さんこ'], answers: ['さんにん'], explain: '人數用「〜にん」；「〜だい」用於車輛機器；「〜こ」用於小東西。', category: '量詞', lesson: '第3堂', sourceId: 'src-l3hw' }),
+    // 練習三
+    ...[['書在書桌上。', ['机の上に本があります。', '本は机の上にあります。'], '兩種都對：①机の上に本があります＝「桌上有什麼？」（が：存在的東西）；②本は机の上にあります＝「書在哪裡？」（は：談論的對象）。'],
+      ['媽媽在家。', ['母は家にいます。', '母は家にいます'], '人存在用「います」，地點用「に」。'],
+      ['我的家人有四個人。', ['わたしの家族は4人です。', '私の家族は4人です。', '家族は4人です。'], ''],
+      ['我搭電車去學校。', ['電車で学校へ行きます。', '電車で学校に行きます。'], '交通工具用「で」，方向用「へ」或「に」。'],
+      ['這個多少錢？', ['これはいくらですか。'], ''],
+      ['請給我這個。', ['これをください。'], '']
+    ].map(([zh, a, ex], i) => Q('q-l3-t' + (i + 1), 'translate', { zh, prompt: '翻成日文', answers: a, explain: ex, category: '句型', lesson: '第3堂', sourceId: 'src-l3hw' })),
+
+    // 第5-6堂 練習一
+    ...[['友達' + F + '映画を見に行きます。', '和朋友一起去看電影。', ['と'], '「と」＝和…一起。'],
+      ['仕事は9時' + F + '5時' + F + 'です。', '工作時間是從早上9點到下午5點。', ['から', 'まで'], '「から」起點、「まで」終點。'],
+      ['スーパーでパン' + F + '牛乳などを買います。', '在超市買麵包、牛奶等等。', ['や'], '有「など」（等等）→ 用「や」舉例。'],
+      ['コーヒー' + F + '紅茶、どちらがいいですか。', '咖啡和紅茶，你比較喜歡哪一個？', ['か/と'], '老師解答為「か」（選擇）。「AとB、どちらが〜」也是很常見的比較說法，所以「と」也接受；已列入家教清單確認。'],
+      ['日曜日' + F + '働きます。', '星期日也工作。', ['も'], '「も」＝也。'],
+      ['東京' + F + '大阪' + F + '新幹線で行きます。', '從東京搭新幹線到大阪。', ['から', 'まで'], '地點的起點與終點也用「から・まで」。'],
+      ['日本語を勉強します' + F + '。', '要學日文嗎？', ['か'], '句尾「か」表示疑問。'],
+      ['このケーキはおいしいです' + F + '。', '這個蛋糕很好吃喔。', ['よ'], '「よ」＝告訴對方資訊。'],
+      ['今日はいい天気です' + F + '。', '今天天氣真好呢。', ['ね'], '「ね」＝尋求對方認同。'],
+      ['私は水' + F + '飲みません。', '我只喝水。', ['しか'], '後面是否定形「飲みません」→ 用「しか」。'],
+      ['一緒にコーヒー' + F + '飲みませんか。', '要不要一起喝個咖啡呢？', ['でも'], '「でも」＝提出輕鬆的建議（…之類的）。']
+    ].map(([p, zh, a, ex], i) => Q('q-l56-' + (i + 1), 'fill', { prompt: p, zh, answers: a, explain: ex, category: '助詞', lesson: L56, sourceId: S56 })),
+    // 練習二
+    ...[['朋友也是學生。', ['友達も学生です。']],
+      ['我跟朋友一起去學校。', ['友達と学校へ行きます。', '友達と一緒に学校へ行きます。', '友達と学校に行きます。', '友達と一緒に学校に行きます。']],
+      ['我從九點工作到五點。', ['9時から5時まで働きます。', '私は9時から5時まで働きます。']],
+      ['我買蘋果、香蕉等等。', ['りんごやバナナを買います。', 'りんごやバナナなどを買います。']],
+      ['你明天要去學校嗎？', ['明日、学校へ行きますか。', '明日、学校に行きますか。']],
+      ['你要喝咖啡還是紅茶？', ['コーヒーか紅茶、どちらを飲みますか。']],
+      ['這家餐廳很好吃喔。', ['このレストランはおいしいですよ。']],
+      ['今天很冷呢。', ['今日は寒いですね。']],
+      ['要不要一起喝杯茶呢？', ['一緒にお茶でも飲みませんか。']],
+      ['今天只有我一個人。', ['今日は私しかいません。']]
+    ].map(([zh, a], i) => Q('q-l56-t' + (i + 1), 'translate', { zh, prompt: '翻成日文', answers: a, category: '助詞', lesson: L56, sourceId: S56 })),
+    // 閱讀
+    ...[['作者從星期幾工作到星期幾？', ['月曜日から金曜日まで働きます。', '月曜日から金曜日までです。']],
+      ['工作時間是從幾點到幾點？', ['9時から6時までです。']],
+      ['星期六和誰一起去買東西？', ['友達と買い物に行きます。', '友達とです。']],
+      ['在超市買什麼？', ['パンや牛乳、りんごなどを買います。']],
+      ['星期日做什麼？', ['家で休みます。日本語を勉強します。', '家で休みます。']]
+    ].map(([zh, a], i) => Q('q-l56-r' + (i + 1), 'translate', { context: '私は会社員です。月曜日から金曜日まで働きます。仕事は9時から6時までです。土曜日は友達と買い物に行きます。スーパーでパンや牛乳、りんごなどを買います。午後はカフェでコーヒーを飲みます。友達もコーヒーが好きです。日曜日は家で休みます。日本語を勉強します。来週は友達と映画館へ行きます。', zh, prompt: '用日文回答', answers: a, category: '閱讀', lesson: L56, sourceId: S56 }))
+  ];
+
+  const tutor = [
+    { id: 't-seed-1', text: '第3堂作業 練習二第1題「りんごを（　）買いました」：參考答案寫「①ひとり」，但蘋果應該用「ひとつ」吧？', ref: 'q:q-l3-8', status: 'open', answer: '', from: 'Claude 整理教材時發現' },
+    { id: 't-seed-2', text: '第3堂作業 練習二第2題的選項「あばさん」，是「おばさん」的筆誤嗎？「おばあさん」和「おばさん」怎麼區分？', ref: 'q:q-l3-9', status: 'open', answer: '', from: 'Claude 整理教材時發現' },
+    { id: 't-seed-3', text: '第5-6堂作業 練習一第4題「コーヒー（　）紅茶、どちらがいいですか」：解答是「か」，用「と」也可以嗎？兩者有什麼差別？', ref: 'q:q-l56-4', status: 'open', answer: '', from: 'Claude 整理教材時發現' },
+    { id: 't-seed-4', text: '第2堂作業沒有參考答案：「我討厭運動」要說「運動が嫌いです」還是「スポーツが嫌いです」？', ref: 'q:q-l2-3', status: 'open', answer: '', from: 'Claude 整理教材時發現' }
+  ];
+  return { sources, items, questions: qs, tutor };
+})();
+
+/* ===== 日本語ノート v2 ===== */
+const KEY = 'nihongoNote.v2';
+const PDFJS = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+const CATS = ['助詞', '動詞變化', '形容詞', '句型', '單字', '量詞', '疑問詞', '會話', '閱讀', '其他'];
+const ITYPE = { vocab: '單字', grammar: '文法', sentence: '句子' };
+const QKIND = { fill: '填空', choice: '選擇', translate: '翻譯' };
+const SKIND = { teacher: '老師教材', scan: '掃描／圖片', web: '網站', ai: 'ChatGPT／AI', self: '自己筆記', other: '其他' };
+const SSTAT = { complete: ['✅', '完整'], partial: ['⚠️', '部分匯入'], unverified: ['🔍', '待人工確認'], pending: ['⏳', '尚未匯入'] };
+const ORIGIN = { teacher: '教材', mine: '我的筆記', ai: 'AI' };
+const PARTICLES = ['は', 'が', 'を', 'に', 'へ', 'で', 'と', 'も', 'や', 'か', 'の', 'ね', 'よ', 'から', 'まで', 'より', 'しか', 'でも', 'だけ', 'など', 'けど', 'て', 'から～まで', 'しか～ない'];
+const QWORDS = ['どう', 'どの', 'どこ', 'どれ', 'どちら', 'どっち', 'どなた', 'どんな', 'いつ', 'だれ', '誰', '何', 'なに', 'なん', 'いくら', '何人', '何時'];
+const BLANK = /[（(][\s　]*[）)]|_{2,}|＿{2,}/g;
+const DAY = 864e5;
+
+/* ---------- storage ---------- */
+function blank() { return { v: 2, seedVersion: 0, sources: [], items: [], questions: [], attempts: [], mistakes: [], tutor: [], settings: { apiKey: '', model: 'claude-sonnet-5-5', lastBackup: null, migratedV1: false } }; }
+let S = load();
+function load() {
+  let d = null;
+  try { d = JSON.parse(localStorage.getItem(KEY)); } catch (e) { }
+  const b = blank();
+  if (!d) d = b;
+  for (const k of Object.keys(b)) if (d[k] == null) d[k] = b[k];
+  d.settings = Object.assign(b.settings, d.settings);
+  return d;
+}
+let saveFail = false;
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); saveFail = false; } catch (e) { if (!saveFail) toast('⚠️ 儲存失敗：瀏覽器空間不足或被封鎖，請先匯出備份'); saveFail = true; } }
+function applySeed(force) {
+  if (!force && S.seedVersion >= SEED_VERSION) return 0;
+  let n = 0;
+  const has = (arr, id) => arr.some(x => x.id === id);
+  const now = Date.now();
+  SEED.sources.forEach(s => { if (!has(S.sources, s.id)) { S.sources.push(Object.assign({ created: now }, s)); n++; } });
+  SEED.items.forEach(s => { if (!has(S.items, s.id)) { S.items.push(Object.assign({ created: now, updated: now }, JSON.parse(JSON.stringify(s)))); n++; } });
+  SEED.questions.forEach(s => { if (!has(S.questions, s.id)) { S.questions.push(Object.assign({ created: now }, JSON.parse(JSON.stringify(s)))); n++; } });
+  SEED.tutor.forEach(s => { if (!has(S.tutor, s.id)) { S.tutor.push(Object.assign({ created: now }, s)); n++; } });
+  S.seedVersion = SEED_VERSION;
+  save();
+  return n;
+}
+function migrateV1() {
+  if (S.settings.migratedV1) return 0;
+  S.settings.migratedV1 = true;
+  let old; try { old = JSON.parse(localStorage.getItem('mistakeNote.v1')); } catch (e) { }
+  let n = 0;
+  if (old && Array.isArray(old.cards)) {
+    old.cards.filter(c => c.lang === 'ja').forEach(c => {
+      const f = c.f || {}, now = Date.now();
+      if (c.type === 'mistake') S.mistakes.push({ id: uid(), ref: '', wrong: f.wrong || '', correct: f.correct || '', why: f.why || '', category: '其他', lesson: '', from: c.source || '舊版錯題本', note: f.note || '', count: 1, streak: 0, resolved: false, created: c.created || now, updated: now });
+      else if (c.type === 'sentence') S.items.push({ id: uid(), type: 'sentence', term: f.sentence || '', reading: '', meaning: f.translation || '', example: f.mine || '', note: f.why || '', tags: c.tags || [], category: '其他', lesson: '', sourceId: '', origin: 'mine', aiAdded: [], created: c.created || now, updated: now });
+      else S.items.push({ id: uid(), type: 'vocab', term: f.term || '', reading: f.reading || '', meaning: f.meaning || '', example: f.example || '', note: f.note || '', tags: c.tags || [], category: '單字', lesson: '', sourceId: '', origin: 'mine', aiAdded: [], created: c.created || now, updated: now });
+      n++;
+    });
+  }
+  save();
+  return n;
+}
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+let tt; function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2600); }
+const hasKana = s => /[぀-ヿ]/.test(s || '');
+const hasKanji = s => /[一-鿿々]/.test(s || '');
+const hasJa = s => hasKana(s) || hasKanji(s);
+function norm(s) { return String(s || '').normalize('NFKC').replace(/[\s　。、，,．.！!？?「」『』（）()〜~～・…:：;；"'“”‘’]/g, '').replace(/私/g, 'わたし').toLowerCase(); }
+function kana(s) { return norm(s).replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60)); }
+function bigrams(s) { s = norm(s); const g = new Set(); for (let i = 0; i < s.length - 1; i++) g.add(s.slice(i, i + 2)); if (s.length === 1) g.add(s); return g; }
+function sim(a, b) { const A = bigrams(a), B = bigrams(b); if (!A.size || !B.size) return 0; let n = 0; A.forEach(x => { if (B.has(x)) n++; }); return n / (A.size + B.size - n); }
+function rb(term, reading) {
+  if (reading && hasKanji(term)) return `<ruby>${esc(term)}<rt>${esc(reading)}</rt></ruby>`;
+  return esc(term) + (reading && kana(reading) !== kana(term) ? `<span class="muted">（${esc(reading)}）</span>` : '');
+}
+function speak(text) {
+  if (!('speechSynthesis' in window)) return toast('此瀏覽器不支援朗讀');
+  speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'ja-JP'; u.rate = .9; speechSynthesis.speak(u);
+}
+const spk = t => t ? `<button class="spk" data-say="${esc(t)}" onclick="speak(this.dataset.say)" aria-label="朗讀">🔊</button>` : '';
+const srcById = id => S.sources.find(s => s.id === id);
+function lessonsList() {
+  const set = new Set();
+  S.sources.forEach(s => s.lesson && set.add(s.lesson));
+  S.items.forEach(s => s.lesson && set.add(s.lesson));
+  S.questions.forEach(s => s.lesson && set.add(s.lesson));
+  const num = l => { const m = String(l).match(/\d+/); return m ? +m[0] : 999; };
+  return [...set].sort((a, b) => num(a) - num(b) || a.localeCompare(b));
+}
+const opt = (v, cur, label) => `<option value="${esc(v)}" ${v === cur ? 'selected' : ''}>${esc(label == null ? v : label)}</option>`;
+const catOpts = cur => CATS.map(c => opt(c, cur)).join('');
+const lessonDatalist = () => `<datalist id="lessonDL">${lessonsList().map(l => `<option value="${esc(l)}">`).join('')}</datalist>`;
+function srcBadge(s) { if (!s) return ''; const st = SSTAT[s.status] || SSTAT.unverified; return `<span class="badge st-${s.status}">${st[0]} ${st[1]}</span>`; }
+function originBadges(o) {
+  let h = '';
+  if (o.origin === 'mine') h += '<span class="tag mine">我的筆記</span>';
+  if (o.origin === 'ai') h += '<span class="tag ai">AI 整理</span>';
+  if (o.aiAdded && o.aiAdded.length) h += `<span class="tag ai">AI 補充：${o.aiAdded.map(f => ({ meaning: '意思', reading: '讀音', example: '例句', note: '備註', explain: '解說' }[f] || f)).join('、')}</span>`;
+  if (o.answerFrom === 'ai') h += '<span class="tag ai">答案由 AI 提供</span>';
+  return h;
+}
+function daysSince(t) { return t ? Math.floor((Date.now() - t) / DAY) : null; }
+
+/* ---------- UI state ---------- */
+let ui = { tab: 'home', lesson: null, search: '', sess: null, setup: { lesson: '', cat: '', kinds: { q: true, t: true, vr: true, vm: false }, mode: 'normal', count: 10 }, mFilter: { status: 'open', cat: '' }, view: null };
+let imp = null; impReset();
+
+function render() {
+  const openMist = S.mistakes.filter(m => !m.resolved).length, openTutor = S.tutor.filter(t => t.status === 'open').length;
+  const tabs = [['home', '📚', '教材'], ['practice', '✍️', '練習'], ['import', '📥', '匯入'], ['mistakes', '❌', '錯題', openMist], ['tutor', '🙋', '家教', openTutor]];
+  $('nav').innerHTML = tabs.map(([k, i, l, n]) => `<button class="${ui.tab === k && !ui.view ? 'on' : ''}" onclick="go('${k}')"><span class="i">${i}${n ? `<span class="nb">${n}</span>` : ''}</span>${l}</button>`).join('');
+  let h;
+  if (ui.view === 'settings') h = vSettings();
+  else if (ui.view === 'status') h = vStatus();
+  else h = { home: vHome, practice: vPractice, import: vImport, mistakes: vMistakes, tutor: vTutor }[ui.tab]();
+  $('main').innerHTML = h;
+}
+function go(t) { ui.tab = t; ui.view = null; if (t === 'home') ui.lesson = null; render(); scrollTo(0, 0); }
+function openView(v) { ui.view = v; render(); scrollTo(0, 0); }
+
+/* ===================== 教材（首頁） ===================== */
+function lessonStats(l) {
+  const it = S.items.filter(x => x.lesson === l), q = S.questions.filter(x => x.lesson === l), src = S.sources.filter(x => x.lesson === l);
+  const refs = new Set([...q.map(x => 'q:' + x.id), ...it.filter(x => x.type === 'vocab').flatMap(x => ['vr:' + x.id, 'vm:' + x.id])]);
+  const at = S.attempts.filter(a => refs.has(a.ref));
+  const done = new Set(at.map(a => a.ref.startsWith('q:') ? a.ref : null).filter(Boolean)).size;
+  const acc = at.length ? Math.round(at.filter(a => a.correct).length / at.length * 100) : null;
+  const open = S.mistakes.filter(m => !m.resolved && m.lesson === l).length;
+  return { it, q, src, at, done, acc, open, vocab: it.filter(x => x.type === 'vocab').length, gram: it.filter(x => x.type !== 'vocab').length };
+}
+function vHome() {
+  if (ui.lesson) return vLesson(ui.lesson);
+  const openMist = S.mistakes.filter(m => !m.resolved).length, openTutor = S.tutor.filter(t => t.status === 'open').length;
+  const recent = S.attempts.filter(a => a.at > Date.now() - 7 * DAY), acc = recent.length ? Math.round(recent.filter(a => a.correct).length / recent.length * 100) : null;
+  const bk = daysSince(S.settings.lastBackup);
+  const needBk = (S.attempts.length + S.mistakes.length > 0) && (bk === null || bk >= 14);
+  const q = ui.search.trim();
+  return `
+  ${needBk ? `<div class="box warnbox row"><span>💾 ${bk === null ? '還沒有備份過' : bk + ' 天沒有備份'}，資料只存在這個瀏覽器。</span><button class="btn sm" style="flex:none" onclick="exportData()">備份</button></div>` : ''}
+  <div class="stats3">
+    <div class="stat" onclick="go('mistakes')"><b>${openMist}</b><span>待克服錯題</span></div>
+    <div class="stat" onclick="go('tutor')"><b>${openTutor}</b><span>要問家教</span></div>
+    <div class="stat"><b>${acc == null ? '—' : acc + '%'}</b><span>7 天正確率</span></div>
+  </div>
+  <div class="row" style="margin-bottom:14px"><button class="btn" onclick="go('practice')">✍️ 開始練習</button><button class="btn ghost" onclick="go('import')">📥 匯入教材</button></div>
+  <input type="search" placeholder="🔍 搜尋單字、文法、題目" value="${esc(ui.search)}" oninput="ui.search=this.value;$('searchRes').innerHTML=searchHTML()">
+  <div id="searchRes">${searchHTML()}</div>
+  ${q ? '' : `<h2 class="sec-h">課程與教材</h2>
+  ${lessonsList().map(l => { const st = lessonStats(l); return `<div class="box lesson" onclick="ui.lesson='${esc(l)}';render();scrollTo(0,0)">
+    <div class="row"><b class="lname">${esc(l)}</b><span class="muted" style="text-align:right">${st.at.length ? (st.q.length ? `已練 ${st.done}/${st.q.length} 題` : '已練習') : '<span class="tag l">尚未練習</span>'}</span></div>
+    <div class="muted">單字 ${st.vocab}・文法／句子 ${st.gram}・題目 ${st.q.length}${st.acc != null ? `・正確率 ${st.acc}%` : ''}${st.open ? `・<span class="bad">錯題 ${st.open}</span>` : ''}</div>
+    <div style="margin-top:6px">${st.src.map(s => srcBadge(s)).join(' ')}</div></div>`; }).join('') || '<div class="box muted center">還沒有教材。到「匯入」新增第一份吧。</div>'}
+  <button class="btn ghost full" onclick="openEdit('item',null,{origin:'mine'})">＋ 手動新增單字／文法筆記</button>`}`;
+}
+function searchHTML() {
+  const q = ui.search.trim(); if (!q) return '';
+  const n = norm(q), k = kana(q);
+  const it = S.items.filter(x => norm([x.term, x.meaning, x.example, x.note, (x.tags || []).join(' ')].join(' ')).includes(n) || (x.reading && kana(x.reading).includes(k))).slice(0, 40);
+  const qs = S.questions.filter(x => norm([x.prompt, x.zh, x.answers.join(' '), x.context].join(' ')).includes(n)).slice(0, 20);
+  if (!it.length && !qs.length) return '<div class="box muted center" style="margin-top:10px">找不到相符的內容</div>';
+  return `<div style="margin-top:10px">${it.map(itemRow).join('')}${qs.map(qRow).join('')}</div>`;
+}
+function itemRow(x) {
+  const s = srcById(x.sourceId);
+  return `<details class="item"><summary><div class="ttl"><span class="tp">${ITYPE[x.type]}</span>${rb(x.term, x.reading)} <span class="sub">${esc(x.meaning.split('\n')[0])}</span></div></summary>
+  <div class="body">${x.meaning ? `<div class="pre">${esc(x.meaning)}</div>` : ''}
+  ${x.example ? `<div class="sec"><div class="muted">例句</div><div class="pre jp">${esc(x.example)} ${spk(x.example.split(/[（\n]/)[0])}</div></div>` : ''}
+  ${x.note ? `<div class="sec"><div class="muted">備註</div><div class="pre">${esc(x.note)}</div></div>` : ''}
+  <div class="sec muted">${esc(x.category)}${x.lesson ? '・' + esc(x.lesson) : ''}${s ? '・來源：' + esc(s.title) : ''}</div>
+  <div>${originBadges(x)}${(x.tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>
+  <div class="row" style="margin-top:8px">${spk(x.term)}<button class="btn sm ghost" onclick="openEdit('item','${x.id}')">✏️ 編輯</button><button class="btn sm ghost" onclick="addTutor('item:${x.id}')">🙋 問家教</button></div></div></details>`;
+}
+function qRow(x) {
+  return `<details class="item"><summary><div class="ttl"><span class="tp">${QKIND[x.kind]}</span>${esc(x.kind === 'translate' ? x.zh : x.prompt)}</div>${x.kind !== 'translate' && x.zh ? `<div class="sub">${esc(x.zh)}</div>` : ''}</summary>
+  <div class="body"><div class="sec"><div class="muted">答案</div><div class="pre jp">${x.answers.length ? esc(x.answers.join(x.kind === 'fill' ? '、' : '\n')) : '<span class="bad">缺答案</span>'}</div></div>
+  ${x.explain ? `<div class="sec"><div class="muted">解說</div><div class="pre">${esc(x.explain)}</div></div>` : ''}
+  <div class="sec">${originBadges(x)}<span class="tag">${esc(x.category)}</span></div>
+  <div class="row" style="margin-top:8px"><button class="btn sm" onclick="startPractice([{t:'q',id:'${x.id}'}])">練習這題</button><button class="btn sm ghost" onclick="openEdit('question','${x.id}')">✏️ 編輯</button></div></div></details>`;
+}
+function vLesson(l) {
+  const st = lessonStats(l);
+  const sec = (title, arr, fn) => arr.length ? `<h2 class="sec-h">${title}（${arr.length}）</h2>${arr.map(fn).join('')}` : '';
+  return `<button class="btn sm ghost" onclick="ui.lesson=null;render()">← 全部課程</button>
+  <h1 class="lt">${esc(l)}</h1>
+  <div class="row" style="margin:8px 0 14px"><button class="btn" onclick="ui.setup.lesson='${esc(l)}';go('practice')">✍️ 練習這一課</button><button class="btn ghost" onclick="imp.src.lesson='${esc(l)}';go('import')">📥 補入教材</button></div>
+  <h2 class="sec-h">來源檔案</h2>
+  ${st.src.map(s => `<div class="box src"><b>${esc(s.title)}</b><div>${srcBadge(s)}</div>
+    <div class="muted">${SKIND[s.kind] || ''}${s.file ? '・' + esc(s.file) : ''}</div>
+    ${s.url ? `<div class="muted"><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url)}</a></div>` : ''}
+    ${s.note ? `<div class="pre small">${esc(s.note)}</div>` : ''}
+    <div style="margin-top:6px"><button class="btn sm ghost" onclick="openEdit('source','${s.id}')">✏️ 編輯／修改狀態</button></div></div>`).join('') || '<div class="muted">沒有來源紀錄</div>'}
+  ${sec('單字', st.it.filter(x => x.type === 'vocab'), itemRow)}
+  ${sec('文法與句子', st.it.filter(x => x.type !== 'vocab'), itemRow)}
+  ${sec('題目', st.q, qRow)}`;
+}
+
+/* ===================== 練習 ===================== */
+function unitsAll() {
+  const u = [];
+  S.questions.forEach(q => { if (q.answers && q.answers.length) u.push({ t: 'q', id: q.id, kind: q.kind === 'translate' ? 't' : 'q', lesson: q.lesson, cat: q.category }); });
+  S.items.filter(x => x.type === 'vocab' && x.term).forEach(x => {
+    if (x.reading && hasKanji(x.term)) u.push({ t: 'vr', id: x.id, kind: 'vr', lesson: x.lesson, cat: x.category });
+    if (x.meaning) u.push({ t: 'vm', id: x.id, kind: 'vm', lesson: x.lesson, cat: x.category });
+  });
+  S.mistakes.filter(m => !m.ref && m.correct && !m.resolved).forEach(m => u.push({ t: 'm', id: m.id, kind: 'm', lesson: m.lesson, cat: m.category }));
+  return u;
+}
+const refOf = u => u.t + ':' + u.id;
+function filteredUnits() {
+  const s = ui.setup;
+  const openRefs = new Set(S.mistakes.filter(m => !m.resolved).map(m => m.ref || 'm:' + m.id));
+  let u = unitsAll().filter(x => (!s.lesson || x.lesson === s.lesson) && (!s.cat || x.cat === s.cat));
+  if (s.mode === 'mistakes') u = u.filter(x => openRefs.has(refOf(x)));
+  else u = u.filter(x => x.kind === 'm' ? false : s.kinds[x.kind]);
+  return u;
+}
+function vPractice() {
+  if (ui.sess) return vSession();
+  const s = ui.setup, u = filteredUnits();
+  const openN = S.mistakes.filter(m => !m.resolved).length;
+  const chk = (k, l) => `<label class="ck"><input type="checkbox" ${s.kinds[k] ? 'checked' : ''} onchange="ui.setup.kinds.${k}=this.checked;render()"> ${l}</label>`;
+  return `<div class="box">
+  <h2>練習設定</h2>
+  <label>課次</label><select onchange="ui.setup.lesson=this.value;render()">${opt('', s.lesson, '全部課次')}${lessonsList().map(l => opt(l, s.lesson)).join('')}</select>
+  <label>類別</label><select onchange="ui.setup.cat=this.value;render()">${opt('', s.cat, '全部類別')}${CATS.map(c => opt(c, s.cat)).join('')}</select>
+  <label>模式</label><div class="seg">${[['normal', '一般'], ['new', '沒做過的優先'], ['mistakes', '只練錯題']].map(([k, l]) => `<button class="${s.mode === k ? 'on' : ''}" onclick="ui.setup.mode='${k}';render()">${l}</button>`).join('')}</div>
+  ${s.mode === 'mistakes' ? '' : `<label>題型</label><div class="cks">${chk('q', '填空／選擇')}${chk('t', '翻譯')}${chk('vr', '單字：看漢字寫讀音')}${chk('vm', '單字：看中文寫日文')}</div>`}
+  <label>題數</label><div class="seg">${[10, 20, 0].map(n => `<button class="${s.count === n ? 'on' : ''}" onclick="ui.setup.count=${n};render()">${n || '全部'}</button>`).join('')}</div>
+  <button class="btn full" style="margin-top:16px" ${u.length ? '' : 'disabled'} onclick="startFromSetup()">開始（符合 ${u.length} 題）</button>
+  </div>
+  ${openN ? `<button class="btn bad full" onclick="ui.setup.mode='mistakes';ui.setup.lesson='';ui.setup.cat='';startFromSetup()">🔥 錯題重練（${openN} 題）</button>` : ''}
+  <p class="muted">作答送出後才會顯示答案與解說。答錯會自動收進錯題本，同一題連續答對 2 次就算「已克服」。</p>`;
+}
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
+function startFromSetup() {
+  let u = shuffle(filteredUnits());
+  if (ui.setup.mode === 'new') { const done = new Set(S.attempts.map(a => a.ref)); u.sort((a, b) => done.has(refOf(a)) - done.has(refOf(b))); }
+  if (ui.setup.count) u = u.slice(0, ui.setup.count);
+  startPractice(u);
+}
+function startPractice(units) {
+  if (!units.length) return toast('沒有可以練習的題目');
+  ui.sess = { units, i: 0, phase: 'answer', input: {}, res: null, right: 0, wrong: 0, newMist: 0 };
+  ui.tab = 'practice'; ui.view = null; render(); scrollTo(0, 0);
+}
+function unitData(u) {
+  if (u.t === 'q') return S.questions.find(q => q.id === u.id);
+  if (u.t === 'm') return S.mistakes.find(m => m.id === u.id);
+  return S.items.find(x => x.id === u.id);
+}
+function blanksHTML(prompt, phase, res) {
+  const parts = prompt.split(BLANK); let h = '';
+  parts.forEach((p, i) => {
+    h += esc(p);
+    if (i < parts.length - 1) {
+      if (phase === 'answer') h += `<input class="blank" id="b${i}" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc((ui.sess.input.b || [])[i] || '')}" onkeydown="if(event.key==='Enter')submitAnswer()">`;
+      else { const ok = res.per[i]; h += `<span class="blankres ${ok ? 'ok' : 'ng'}">${esc(res.given[i] || '　')}</span>${ok ? '' : `<span class="blankfix">${esc(res.expected[i])}</span>`}`; }
+    }
+  });
+  return h;
+}
+function vSession() {
+  const s = ui.sess;
+  if (s.i >= s.units.length) {
+    return `<div class="box center"><div class="big">${s.right}/${s.right + s.wrong}</div><p>答對題數${s.newMist ? `・新增 ${s.newMist} 筆錯題` : ''}</p>
+    <div class="row"><button class="btn ghost" onclick="ui.sess=null;render()">返回</button>${s.wrong ? `<button class="btn" onclick="ui.setup.mode='mistakes';ui.sess=null;startFromSetup()">重練錯題</button>` : ''}</div></div>`;
+  }
+  const u = s.units[s.i], d = unitData(u);
+  if (!d) { s.i++; return vSession(); }
+  const ph = s.phase, res = s.res;
+  let label = '', body = '';
+  if (u.t === 'q') {
+    label = `${QKIND[d.kind]}・${esc(d.category)}${d.lesson ? '・' + esc(d.lesson) : ''}`;
+    const ctx = d.context ? `<div class="ctx jp">${esc(d.context)} ${spk(d.context)}</div>` : '';
+    if (d.kind === 'fill') body = `${ctx}<div class="q jp">${blanksHTML(d.prompt, ph, res)}</div>${d.zh ? `<div class="zh">${esc(d.zh)}</div>` : ''}`;
+    else if (d.kind === 'choice') {
+      const sel = ph === 'answer' ? s.input.choice : res.given[0];
+      const fillIn = ph === 'answer' ? (sel ? `（<u>${esc(sel)}</u>）` : '（＿＿）') : `（<span class="${res.correct ? 'ok' : 'ng'}">${esc(sel)}</span>）`;
+      body = `${ctx}<div class="q jp">${esc(d.prompt).replace(BLANK, fillIn)}</div>${d.zh ? `<div class="zh">${esc(d.zh)}</div>` : ''}
+      <div class="opts">${d.options.map(o => { let c = ''; if (ph === 'answer') c = o === sel ? 'sel' : ''; else c = d.answers.includes(o) ? 'right' : (o === sel ? 'wrong' : ''); return `<button class="opt ${c}" ${ph === 'answer' ? `onclick="ui.sess.input.choice=this.dataset.v;render()"` : 'disabled'} data-v="${esc(o)}">${esc(o)}</button>`; }).join('')}</div>`;
+    } else {
+      body = `${ctx}<div class="q">${esc(d.zh)}</div><div class="muted" style="margin-top:4px">${esc(d.prompt || '翻成日文')}</div>${answerBox()}`;
+    }
+  } else if (u.t === 'vr') { label = `單字讀音・${esc(d.lesson || '')}`; body = `<div class="q big-jp">${esc(d.term)}</div><div class="muted">寫出平假名讀音</div>${answerBox(true)}`; }
+  else if (u.t === 'vm') { label = `單字・${esc(d.lesson || '')}`; body = `<div class="q">${esc(d.meaning)}</div><div class="muted">用日文寫出這個字（漢字或假名皆可）</div>${answerBox(true)}`; }
+  else if (u.t === 'm') { label = `錯題改正・${esc(d.category)}`; body = `<div class="q jp wrongtxt">${esc(d.wrong)}</div><div class="muted" style="margin-top:4px">這句有錯，寫出正確的句子</div>${answerBox()}`; }
+
+  let foot = '';
+  if (ph === 'answer') foot = `<button class="btn full" onclick="submitAnswer()">送出答案</button><button class="btn sm ghost" style="margin-top:10px" onclick="skipUnit()">跳過</button>`;
+  else if (ph === 'judge') {
+    foot = `<div class="box warnbox"><b>和參考答案不完全一樣</b><div class="muted">請自己對照，或讓 AI 批改。</div>
+    <div class="sec"><div class="muted">你的答案</div><div class="jp">${esc(res.given[0])}</div></div>
+    <div class="sec"><div class="muted">參考答案</div><div class="jp pre">${esc(res.expected.join('\n'))}</div></div>
+    ${res.ai ? `<div class="sec aibox">🤖 ${esc(res.ai)}</div>` : ''}</div>
+    <div class="row"><button class="btn good" onclick="judge(true)">✅ 我答對了</button><button class="btn bad" onclick="judge(false)">❌ 我答錯了</button></div>
+    ${S.settings.apiKey && !res.ai ? `<button class="btn ghost full" style="margin-top:8px" onclick="aiJudge()" ${res.busy ? 'disabled' : ''}>${res.busy ? '⏳ AI 批改中…' : '🤖 AI 批改'}</button>` : ''}
+    ${u.t === 'q' ? '<p class="muted small">選「我答對了」會把你的說法加入這題的可接受答案。</p>' : ''}`;
+  } else foot = resultHTML(u, d, res);
+  return `<div class="progress"><i style="width:${s.i / s.units.length * 100}%"></i></div>
+  <div class="row muted" style="margin-bottom:8px"><span>${label}</span><span style="text-align:right">${s.i + 1} / ${s.units.length}</span></div>
+  <div class="box qbox">${body}</div>${foot}
+  <div class="row" style="margin-top:14px"><button class="btn sm ghost" onclick="ui.sess.i=ui.sess.units.length;render()">結束</button></div>`;
+}
+function answerBox(short) {
+  const s = ui.sess;
+  if (s.phase !== 'answer') return '';
+  return short ? `<input type="text" id="ans" class="ansin" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(s.input.text || '')}" onkeydown="if(event.key==='Enter')submitAnswer()">`
+    : `<textarea id="ans" class="ansin" placeholder="在這裡輸入日文">${esc(s.input.text || '')}</textarea>`;
+}
+function resultHTML(u, d, res) {
+  let exp = '', why = '';
+  if (u.t === 'q') { why = d.explain; }
+  else if (u.t === 'm') why = d.why;
+  else why = [d.reading ? `讀音：${d.reading}` : '', `意思：${d.meaning}`, d.example ? `例句：${d.example}` : ''].filter(Boolean).join('\n');
+  if (!(u.t === 'q' && d.kind !== 'translate')) exp = `<div class="sec"><div class="muted">正確答案</div><div class="jp pre ok">${esc(res.expected.join('\n'))} ${spk(res.expected[0])}</div></div>`;
+  else if (d.kind === 'fill') exp = `<div class="sec"><div class="muted">完整句子</div><div class="jp ok">${esc(fillSentence(d))} ${spk(fillSentence(d))}</div></div>`;
+  return `<div class="box ${res.correct ? 'okbox' : 'ngbox'}"><b>${res.correct ? '✅ 答對了' : '❌ 答錯了'}</b>
+  ${!res.correct && (u.t !== 'q' || d.kind === 'translate') ? `<div class="sec"><div class="muted">你的答案</div><div class="jp">${esc(res.given[0] || '（空白）')}</div></div>` : ''}
+  ${exp}${why ? `<div class="sec"><div class="muted">解說</div><div class="pre">${esc(why)}</div></div>` : ''}
+  ${res.ai ? `<div class="sec aibox">🤖 ${esc(res.ai)}</div>` : ''}
+  ${u.t === 'q' ? `<div class="sec">${originBadges(d)}</div>` : ''}
+  ${!res.correct ? '<div class="muted small sec">已收進錯題本</div>' : ''}</div>
+  <button class="btn full" onclick="nextUnit()">下一題 →</button>
+  <div class="row" style="margin-top:8px"><button class="btn sm ghost" data-g="${esc(res.given.join('、'))}" onclick="addTutor('${refOf(u)}',this.dataset.g)">🙋 加入家教清單</button>${u.t === 'q' ? `<button class="btn sm ghost" onclick="openEdit('question','${d.id}')">✏️ 編輯題目</button>` : u.t !== 'm' ? `<button class="btn sm ghost" onclick="openEdit('item','${d.id}')">✏️ 編輯單字</button>` : ''}</div>`;
+}
+function fillSentence(d) { let i = 0; return d.prompt.replace(BLANK, () => (d.answers[i++] || '').split(/[\/／]/)[0]); }
+function readInputs() {
+  const s = ui.sess;
+  const bl = [...document.querySelectorAll('.blank')].map(e => e.value);
+  if (bl.length) s.input.b = bl;
+  const a = $('ans'); if (a) s.input.text = a.value;
+}
+function submitAnswer() {
+  const s = ui.sess; readInputs();
+  const u = s.units[s.i], d = unitData(u);
+  let res;
+  if (u.t === 'q' && d.kind === 'fill') {
+    const n = (d.prompt.match(BLANK) || []).length, given = s.input.b || [];
+    if (given.filter(x => x.trim()).length < n) return toast('還有空格沒填');
+    const per = d.answers.map((a, i) => a.split(/[\/／]/).some(alt => kana(alt) === kana(given[i])));
+    res = { correct: per.every(Boolean), per, given, expected: d.answers.map(a => a.split(/[\/／]/)[0]) };
+  } else if (u.t === 'q' && d.kind === 'choice') {
+    if (!s.input.choice) return toast('請先選一個答案');
+    res = { correct: d.answers.includes(s.input.choice), given: [s.input.choice], expected: d.answers };
+  } else {
+    const g = (s.input.text || '').trim();
+    if (!g) return toast('請先輸入答案');
+    let expected, ok;
+    if (u.t === 'vr') { expected = [d.reading]; ok = kana(g) === kana(d.reading); }
+    else if (u.t === 'vm') { expected = [d.term + (d.reading && d.reading !== d.term ? `（${d.reading}）` : '')]; ok = [d.term, d.reading, d.term.replace(/～.*$/, '')].filter(Boolean).some(a => kana(a) === kana(g)); }
+    else if (u.t === 'm') { expected = [d.correct]; ok = kana(g) === kana(d.correct); }
+    else { expected = d.answers; ok = d.answers.some(a => kana(a) === kana(g)); }
+    res = { correct: ok, given: [g], expected };
+    if (!ok && (u.t === 'm' || u.t === 'q')) { s.res = res; s.phase = 'judge'; return render(); }
+  }
+  s.res = res; record(u, d, res); s.phase = 'result'; render();
+}
+function judge(ok) {
+  const s = ui.sess, u = s.units[s.i], d = unitData(u);
+  s.res.correct = ok;
+  if (ok && u.t === 'q' && !d.answers.some(a => kana(a) === kana(s.res.given[0]))) d.answers.push(s.res.given[0]);
+  record(u, d, s.res); s.phase = 'result'; render();
+}
+async function aiJudge() {
+  const s = ui.sess, u = s.units[s.i], d = unitData(u);
+  s.res.busy = true; render();
+  const task = u.t === 'm' ? `The learner must correct this wrong Japanese sentence: "${d.wrong}". Reference correction: "${d.correct}".` : `Task: ${d.context ? 'Answer in Japanese a question about this passage: ' + d.context + '\nQuestion: ' : 'Translate into Japanese: '}"${d.zh}". Reference answers: ${d.answers.map(a => '"' + a + '"').join(' / ')}.`;
+  const prompt = `You are a Japanese teacher for a Traditional Chinese (Taiwan) speaking beginner.\n${task}\nLearner's answer: "${s.res.given[0]}".\nIs the learner's answer grammatically correct and does it convey the right meaning? Small differences (kanji vs kana, omitting 私は, に vs へ for direction, polite vs equivalent forms) are acceptable.\nReply ONLY with JSON: {"correct": true or false, "feedback": "1-3 sentences in Traditional Chinese pointing out any mistakes"}`;
+  try { const o = parseJSON(await callClaude([{ type: 'text', text: prompt }], 600)); s.res.ai = (o.correct ? '判定正確。' : '判定錯誤。') + (o.feedback || ''); }
+  catch (e) { toast('AI 批改失敗：' + e.message); }
+  s.res.busy = false; render();
+}
+function record(u, d, res) {
+  const ref = refOf(u), now = Date.now(), s = ui.sess;
+  const cat = d.category || '單字';
+  S.attempts.push({ ref, correct: res.correct, answer: res.given.join('、'), at: now, cat, lesson: d.lesson || '' });
+  if (S.attempts.length > 5000) S.attempts.splice(0, S.attempts.length - 5000);
+  res.correct ? s.right++ : s.wrong++;
+  let m = u.t === 'm' ? d : S.mistakes.find(x => x.ref === ref);
+  if (!res.correct) {
+    const correct = u.t === 'q' ? (d.kind === 'fill' ? fillSentence(d) : d.answers[0]) : res.expected[0];
+    const wrong = u.t === 'q' && d.kind === 'fill' ? (() => { let i = 0; return d.prompt.replace(BLANK, () => `【${res.given[i++] || ''}】`); })() : u.t === 'q' && d.kind === 'choice' ? d.prompt.replace(BLANK, `【${res.given[0]}】`) : res.given[0];
+    if (!m) { m = { id: uid(), ref, wrong, correct, why: u.t === 'q' ? d.explain : '', category: cat, lesson: d.lesson || '', from: '練習', note: '', count: 0, streak: 0, resolved: false, created: now }; S.mistakes.unshift(m); s.newMist++; }
+    if (u.t !== 'm') m.wrong = wrong;
+    m.count++; m.streak = 0; m.resolved = false; m.updated = now;
+  } else if (m) {
+    m.streak = (m.streak || 0) + 1; m.updated = now;
+    if (m.streak >= 2 && !m.resolved) { m.resolved = true; toast('🎉 這題已克服！'); }
+  }
+  save();
+}
+function nextUnit() { const s = ui.sess; s.i++; s.phase = 'answer'; s.input = {}; s.res = null; render(); scrollTo(0, 0); setTimeout(() => { const f = document.querySelector('.blank,#ans'); if (f) f.focus(); }, 50); }
+function skipUnit() { nextUnit(); }
+
+/* ===================== 錯題本 ===================== */
+function vMistakes() {
+  const f = ui.mFilter;
+  const list = S.mistakes.filter(m => (f.status === 'all' || (f.status === 'open' ? !m.resolved : m.resolved)) && (!f.cat || m.category === f.cat));
+  const byCat = {};
+  CATS.forEach(c => byCat[c] = { n: 0, ok: 0, open: 0 });
+  S.attempts.forEach(a => { const c = byCat[a.cat] || (byCat[a.cat] = { n: 0, ok: 0, open: 0 }); c.n++; if (a.correct) c.ok++; });
+  S.mistakes.filter(m => !m.resolved).forEach(m => { (byCat[m.category] || (byCat[m.category] = { n: 0, ok: 0, open: 0 })).open++; });
+  const rows = Object.entries(byCat).filter(([, v]) => v.n || v.open).sort((a, b) => b[1].open - a[1].open || (a[1].ok / a[1].n) - (b[1].ok / b[1].n));
+  const maxOpen = Math.max(1, ...rows.map(r => r[1].open));
+  return `<div class="box"><h2>🎯 弱點分析</h2>
+  ${rows.length ? rows.map(([c, v]) => `<div class="bar" onclick="ui.mFilter.cat='${c}';render()"><span class="n">${esc(c)}</span><span class="t"><i style="width:${v.open / maxOpen * 100}%"></i></span><span class="c">${v.open}</span><span class="acc">${v.n ? Math.round(v.ok / v.n * 100) + '%' : '—'}</span></div>`).join('') + '<div class="muted small">條狀＝未克服錯題數；右側＝作答正確率</div>' : '<div class="muted">開始練習後，這裡會顯示你最常錯的類別。</div>'}
+  </div>
+  <div class="row" style="margin-bottom:10px"><button class="btn" onclick="ui.setup.mode='mistakes';ui.setup.lesson='';ui.setup.cat='${esc(f.cat)}';startFromSetup()" ${list.some(m => !m.resolved) ? '' : 'disabled'}>🔥 重練${f.cat ? '「' + esc(f.cat) + '」' : ''}錯題</button><button class="btn ghost" onclick="openEdit('mistake',null)">＋ 記一筆錯題</button></div>
+  <div class="seg">${[['open', '未克服'], ['done', '已克服'], ['all', '全部']].map(([k, l]) => `<button class="${f.status === k ? 'on' : ''}" onclick="ui.mFilter.status='${k}';render()">${l}</button>`).join('')}</div>
+  <div class="chips">${['', ...CATS].map(c => `<button class="chip ${f.cat === c ? 'on' : ''}" onclick="ui.mFilter.cat='${c}';render()">${c || '全部類別'}</button>`).join('')}</div>
+  ${list.map(m => `<div class="box mist">
+    <div class="jp wrongtxt">${esc(m.wrong)}</div><div class="jp ok">→ ${esc(m.correct)}</div>
+    ${m.why ? `<div class="pre small sec">${esc(m.why)}</div>` : ''}
+    <div class="muted small sec"><span class="tag">${esc(m.category)}</span>${m.lesson ? esc(m.lesson) + '・' : ''}${esc(m.from || '')}・錯 ${m.count || 1} 次${m.resolved ? '・<span class="okc">已克服</span>' : m.streak ? `・連對 ${m.streak}` : ''}</div>
+    <div class="row" style="margin-top:8px">${m.ref || m.correct ? `<button class="btn sm" onclick="practiceMistake('${m.id}')">練習</button>` : ''}<button class="btn sm ghost" onclick="addTutor('${m.ref || 'm:' + m.id}')">🙋 問家教</button><button class="btn sm ghost" onclick="openEdit('mistake','${m.id}')">✏️</button></div></div>`).join('') || '<div class="box muted center">這裡沒有錯題 👍</div>'}`;
+}
+function practiceMistake(id) {
+  const m = S.mistakes.find(x => x.id === id); if (!m) return;
+  if (!m.ref) return startPractice([{ t: 'm', id: m.id }]);
+  const [t, ...r] = m.ref.split(':'); startPractice([{ t, id: r.join(':') }]);
+}
+
+/* ===================== 家教清單 ===================== */
+function refLabel(ref) {
+  if (!ref) return '';
+  const [t, ...r] = ref.split(':'), id = r.join(':');
+  if (t === 'q') { const q = S.questions.find(x => x.id === id); return q ? `${q.lesson || ''} ${QKIND[q.kind]}：${q.kind === 'translate' ? q.zh : q.prompt}` : ''; }
+  if (t === 'm') { const m = S.mistakes.find(x => x.id === id); return m ? `錯題：${m.wrong}` : ''; }
+  const x = S.items.find(i => i.id === id); return x ? `${x.lesson || ''} ${ITYPE[x.type]}：${x.term}` : '';
+}
+function addTutor(ref, given) {
+  const lab = refLabel(ref);
+  openEdit('tutor', null, { ref, text: lab ? `關於「${lab}」${given ? `（我寫：${given}）` : ''}：` : '' });
+}
+function vTutor() {
+  const st = { open: '待問', asked: '已問', done: '已解決' };
+  const groups = ['open', 'asked', 'done'].map(k => [k, S.tutor.filter(t => (t.status || 'open') === k)]);
+  return `<div class="row" style="margin-bottom:12px"><button class="btn" onclick="openEdit('tutor',null)">＋ 新增問題</button><button class="btn ghost" onclick="copyTutor()">📋 複製待問清單</button></div>
+  <p class="muted small">上課前按「複製待問清單」，就能直接貼給老師或帶去上課。練習時、錯題本、單字裡都有「🙋 問家教」按鈕。</p>
+  ${groups.map(([k, arr]) => arr.length ? `<h2 class="sec-h">${st[k]}（${arr.length}）</h2>${arr.map(t => `<div class="box tutor ${k}">
+    <div class="pre">${esc(t.text)}</div>
+    ${t.ref && refLabel(t.ref) ? `<div class="muted small sec">🔗 ${esc(refLabel(t.ref))}</div>` : ''}
+    ${t.from ? `<div class="muted small">${esc(t.from)}</div>` : ''}
+    ${t.answer ? `<div class="sec aibox">👩‍🏫 ${esc(t.answer)}</div>` : ''}
+    <div class="row" style="margin-top:8px">${k === 'open' ? `<button class="btn sm" onclick="setTutor('${t.id}','asked')">已問</button>` : ''}${k !== 'done' ? `<button class="btn sm good" onclick="openEdit('tutor','${t.id}',{status:'done'})">記下回答・已解決</button>` : ''}<button class="btn sm ghost" onclick="openEdit('tutor','${t.id}')">✏️</button></div></div>`).join('')}` : '').join('') || '<div class="box muted center">目前沒有要問的問題</div>'}`;
+}
+function setTutor(id, st) { const t = S.tutor.find(x => x.id === id); t.status = st; t.updated = Date.now(); save(); render(); }
+function copyTutor() {
+  const a = S.tutor.filter(t => (t.status || 'open') === 'open');
+  if (!a.length) return toast('沒有待問的問題');
+  copyText('先生、質問があります：\n' + a.map((t, i) => `${i + 1}. ${t.text}`).join('\n'));
+  toast('已複製 ' + a.length + ' 個問題');
+}
+async function copyText(s) { try { await navigator.clipboard.writeText(s); } catch (e) { const t = document.createElement('textarea'); t.value = s; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); } }
+
+/* ===================== 編輯視窗 ===================== */
+const FORMS = {
+  item: [['type', '類型', 'sel', () => Object.entries(ITYPE)], ['term', '單字／句型／句子', 'text'], ['reading', '讀音（平假名）', 'text'], ['meaning', '中文意思／說明', 'ta'], ['example', '例句', 'ta'], ['note', '備註', 'ta'], ['category', '類別', 'sel', () => CATS.map(c => [c, c])], ['tags', '標籤（逗號分隔）', 'text'], ['lesson', '課次', 'lesson'], ['sourceId', '來源', 'src']],
+  question: [['kind', '題型', 'sel', () => Object.entries(QKIND)], ['context', '閱讀短文（可空白）', 'ta'], ['zh', '中文（提示或翻譯題題目）', 'text'], ['prompt', '題目（空格寫成（　））', 'ta'], ['options', '選項（選擇題，用頓號或逗號分隔）', 'text'], ['answers', '答案（每行一個；填空題每個空格一行，可接受的答案用 / 分隔）', 'ta'], ['explain', '解說', 'ta'], ['category', '類別', 'sel', () => CATS.map(c => [c, c])], ['lesson', '課次', 'lesson'], ['sourceId', '來源', 'src']],
+  mistake: [['wrong', '我寫的（錯誤）', 'ta'], ['correct', '正確', 'ta'], ['why', '原因', 'ta'], ['category', '類別', 'sel', () => CATS.map(c => [c, c])], ['lesson', '課次', 'lesson'], ['from', '出處（家教、ChatGPT…）', 'text'], ['note', '備註', 'ta']],
+  tutor: [['text', '問題', 'ta'], ['answer', '老師的回答', 'ta'], ['status', '狀態', 'sel', () => [['open', '待問'], ['asked', '已問'], ['done', '已解決']]]],
+  source: [['title', '標題', 'text'], ['lesson', '課次', 'lesson'], ['kind', '來源類型', 'sel', () => Object.entries(SKIND)], ['status', '匯入狀態', 'sel', () => Object.entries(SSTAT).map(([k, v]) => [k, v.join(' ')])], ['file', '檔案位置', 'text'], ['url', '網址', 'text'], ['note', '說明', 'ta']]
+};
+const COLL = { item: 'items', question: 'questions', mistake: 'mistakes', tutor: 'tutor', source: 'sources' };
+let modal = null;
+function openEdit(kind, id, preset) {
+  const obj = id ? Object.assign({}, S[COLL[kind]].find(x => x.id === id), preset || {}) : Object.assign({ type: 'vocab', kind: 'fill', category: kind === 'item' ? '單字' : '其他', status: kind === 'source' ? 'unverified' : 'open', lesson: ui.lesson || '' }, preset || {});
+  modal = { kind, id, obj };
+  const title = { item: '單字／文法', question: '題目', mistake: '錯題', tutor: '家教問題', source: '來源' }[kind];
+  const f = FORMS[kind].map(([k, l, t, o]) => {
+    let v = obj[k]; if (Array.isArray(v)) v = k === 'answers' ? v.join('\n') : v.join(k === 'options' ? '、' : ', ');
+    let inp;
+    if (t === 'ta') inp = `<textarea id="m_${k}">${esc(v)}</textarea>`;
+    else if (t === 'sel') inp = `<select id="m_${k}">${o().map(([a, b]) => opt(a, v, b)).join('')}</select>`;
+    else if (t === 'lesson') inp = `<input type="text" id="m_${k}" list="lessonDL" value="${esc(v)}">`;
+    else if (t === 'src') inp = `<select id="m_${k}">${opt('', v, '（無）')}${S.sources.map(s => opt(s.id, v, s.title)).join('')}</select>`;
+    else inp = `<input type="text" id="m_${k}" value="${esc(v)}">`;
+    return `<label>${l}</label>${inp}`;
+  }).join('');
+  const ai = kind === 'mistake' || kind === 'item' ? `<button class="btn ghost full" style="margin-top:12px" onclick="modalAI()">✨ AI 補完欄位</button>` : '';
+  $('modal').innerHTML = `<div class="mback" onclick="if(event.target===this)closeModal()"><div class="mbox">
+    <div class="row"><h2 style="margin:0">${id ? '編輯' : '新增'}${title}</h2><button class="btn sm ghost" style="flex:none" onclick="closeModal()">✕</button></div>
+    ${lessonDatalist()}${f}${ai}
+    <div class="row" style="margin-top:16px">${id ? `<button class="btn bad" style="flex:none" onclick="delModal()">刪除</button>` : ''}<button class="btn" onclick="saveModal()">儲存</button></div></div></div>`;
+}
+function closeModal() { modal = null; $('modal').innerHTML = ''; }
+function readModal() {
+  const o = modal.obj;
+  FORMS[modal.kind].forEach(([k]) => {
+    const e = $('m_' + k); if (!e) return; let v = e.value;
+    if (k === 'tags') v = v.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
+    else if (k === 'options') v = v.split(/[,，、\n]/).map(s => s.trim()).filter(Boolean);
+    else if (k === 'answers') v = v.split('\n').map(s => s.trim()).filter(Boolean);
+    o[k] = v;
+  });
+  return o;
+}
+function saveModal() {
+  const o = readModal(), k = modal.kind, now = Date.now();
+  const need = { item: 'term', question: modal.obj.kind === 'translate' ? 'zh' : 'prompt', mistake: 'wrong', tutor: 'text', source: 'title' }[k];
+  if (!String(o[need] || '').trim()) return toast('請填寫必填欄位');
+  if (k === 'question') { const e = validateQuestion(o).errors; if (e.length) return toast('⚠️ ' + e[0]); }
+  if (k === 'item' && o.reading && !/^[぀-ヿー・\s～〜]*$/.test(o.reading)) return toast('⚠️ 讀音只能用假名');
+  const arr = S[COLL[k]];
+  if (modal.id) { const t = arr.find(x => x.id === modal.id); Object.assign(t, o, { updated: now }); }
+  else {
+    Object.assign(o, { id: uid(), created: now, updated: now });
+    if (k === 'item') { o.origin = o.origin || 'mine'; o.aiAdded = o.aiAdded || []; }
+    if (k === 'question') { o.origin = o.origin || 'mine'; o.answerFrom = o.answerFrom || 'material'; o.options = o.options || []; }
+    if (k === 'mistake') Object.assign(o, { ref: '', count: 1, streak: 0, resolved: false });
+    if (k === 'tutor') o.status = o.status || 'open';
+    arr.unshift(o);
+  }
+  save(); closeModal(); render(); toast('已儲存');
+}
+function delModal() {
+  if (!confirm('確定刪除？刪除後無法復原（除非有備份）。')) return;
+  const arr = S[COLL[modal.kind]]; const i = arr.findIndex(x => x.id === modal.id); if (i >= 0) arr.splice(i, 1);
+  save(); closeModal(); render(); toast('已刪除');
+}
+async function modalAI() {
+  const o = readModal(), k = modal.kind;
+  let prompt;
+  if (k === 'mistake') {
+    if (!o.wrong) return toast('先填「我寫的」');
+    prompt = `You are a Japanese teacher for a Traditional Chinese (Taiwan) speaking beginner. The learner wrote this Japanese (it may already include a correction from their tutor):\n"""${o.wrong}${o.correct ? '\nCorrection: ' + o.correct : ''}"""\nReply ONLY with JSON {"wrong": "learner's original sentence", "correct": "corrected natural sentence", "why": "concise Traditional Chinese explanation of each error, one line per error", "category": one of ${JSON.stringify(CATS)}}`;
+  } else {
+    if (!o.term) return toast('先填單字／句型');
+    prompt = `You are a Japanese teacher for a Traditional Chinese (Taiwan) speaking beginner. Fill in a study note for: "${o.term}".\nReply ONLY with JSON {"type": "vocab" or "grammar" or "sentence", "term": dictionary form, "reading": hiragana reading (empty if term is all kana), "meaning": Traditional Chinese meaning with part of speech, "example": one natural example sentence + Chinese translation in parentheses, "note": usage tips or easily confused words in Traditional Chinese, "category": one of ${JSON.stringify(CATS)}}`;
+  }
+  const filled = [];
+  const apply = r => { const j = parseJSON(r); Object.keys(j).forEach(f => { if (j[f] && !String(o[f] || '').trim()) { o[f] = j[f]; filled.push(f); } }); if (k === 'item') o.aiAdded = [...new Set([...(o.aiAdded || []), ...filled.filter(f => ['meaning', 'reading', 'example', 'note'].includes(f))])]; openEdit(k, modal.id, o); toast('已補上空白欄位（原有內容不變）'); };
+  if (S.settings.apiKey) { toast('AI 處理中…'); try { apply(await callClaude([{ type: 'text', text: prompt }], 1000)); } catch (e) { toast('AI 失敗：' + e.message); } }
+  else {
+    await copyText(prompt);
+    const r = window.prompt('提示詞已複製。請貼到 ChatGPT，再把回覆整段貼在這裡：');
+    if (r) { try { apply(r); } catch (e) { toast('無法讀取回覆'); } }
+  }
+}
+
+/* ===================== AI ===================== */
+async function callClaude(content, maxTokens) {
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST', headers: { 'content-type': 'application/json', 'x-api-key': S.settings.apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+    body: JSON.stringify({ model: S.settings.model || 'claude-sonnet-5-5', max_tokens: maxTokens || 8000, messages: [{ role: 'user', content }] })
+  });
+  let j; try { j = await r.json(); } catch (e) { throw new Error('回應格式錯誤 ' + r.status); }
+  if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
+  return j.content.map(b => b.text || '').join('');
+}
+function parseJSON(t) {
+  t = String(t).replace(/```(?:json)?/g, '');
+  const a = t.indexOf('{'), b = t.lastIndexOf('}');
+  if (a < 0 || b < a) throw new Error('回覆中找不到 JSON');
+  return JSON.parse(t.slice(a, b + 1));
+}
+function extractPrompt(title, lesson, text) {
+  return `You are helping a Traditional Chinese (Taiwan) speaker organise their Japanese study material into a study app.
+Material: "${title || '未命名'}"${lesson ? `, lesson "${lesson}"` : ''}.
+${text ? `Material text (extracted from a PDF or copied from a web page; furigana may be mixed into the text):\n"""\n${text}\n"""` : 'The material is in the attached image(s)/file.'}
+
+Extract ONLY what is actually in the material. Do not invent new vocabulary or exercises.
+Reply with ONLY a JSON object (no markdown):
+{"items":[{"type":"vocab|grammar|sentence","term":"","reading":"","meaning":"","example":"","note":"","category":"","tags":[],"aiAdded":[]}],
+ "questions":[{"kind":"fill|choice|translate","context":"","zh":"","prompt":"","options":[],"answers":[],"explain":"","category":"","answerFrom":"material|ai"}],
+ "complete":true,"warnings":[]}
+Rules:
+- vocab: term as written in the material (dictionary form); reading in hiragana/katakana only (empty if the term is all kana); meaning in Traditional Chinese.
+- grammar: term = the pattern (e.g. 「〜から〜まで」); meaning = explanation; example = example sentences from the material.
+- If you add content that is not in the material (e.g. a Chinese meaning or reading the material does not give), list those field names in "aiAdded".
+- fill: write each blank in "prompt" as （　）; "answers" has one string per blank, alternatives separated by "/".
+- choice: "prompt" has one （　） blank; "options" lists the choices; "answers" = [the correct option text].
+- translate: "zh" = the Chinese sentence; "prompt" = "翻成日文"; "answers" = acceptable Japanese answers. For reading-comprehension questions put the passage in "context".
+- If the material includes an answer key, use it and set answerFrom "material". If not, give your answer and set answerFrom "ai". If an answer key looks wrong, keep the key's answer and say so in "explain".
+- Remove furigana that is mixed into sentences and rebuild clean text.
+- Include legible handwritten notes in "note", prefixed with "手寫：".
+- category must be one of: ${CATS.join(', ')}.
+- If anything is cut off, unreadable, or seems incomplete, set "complete": false and explain in "warnings" (Traditional Chinese).`;
+}
+
+/* ===================== 匯入 ===================== */
+function impReset(keepSrc) {
+  const src = keepSrc && imp ? imp.src : { mode: 'new', existingId: '', title: '', lesson: '', kind: 'teacher', url: '', file: '' };
+  imp = { step: 1, method: null, src, text: '', pages: [], images: [], fileName: '', busy: false, progress: '', rows: [], unrec: [], warnings: [], aiIncomplete: false, imgDone: new Set(), chat: null, status: '' };
+}
+function vImport() {
+  if (imp.step === 3) return vPreview();
+  if (imp.step === 1) {
+    return `<h2 class="sec-h" style="margin-top:0">選擇匯入方式</h2>
+    ${[['paste', '①', '貼上文字', '講義文字、網站複製的內容、ChatGPT 整理好的結果、老師的作業解答'], ['file', '②', 'PDF／圖片檔案', '老師的 PDF、教材拍照或截圖。文字頁可直接讀取；圖片頁需要 AI 辨識'], ['url', '③', '網址', '記錄網站來源。網頁內容需另外貼上，或用瀏覽器「列印成 PDF」後用②匯入']].map(([k, n, t, d]) => `<button class="mcard" onclick="imp.method='${k}';imp.step=2;imp.src.kind='${k === 'url' ? 'web' : k === 'file' ? 'teacher' : imp.src.kind}';render()"><span class="mn">${n}</span><span><b>${t}</b><br><span class="muted">${d}</span></span></button>`).join('')}
+    <p class="muted small">所有匯入都會先進入「預覽」：檢查格式、標出重複與相似內容，確認後才會存入。</p>`;
+  }
+  const s = imp.src, m = imp.method;
+  const srcSel = `<label>存到</label><div class="seg">${[['new', '新的來源'], ['existing', '補入既有來源']].map(([k, l]) => `<button class="${s.mode === k ? 'on' : ''}" onclick="impSrcRead();imp.src.mode='${k}';render()">${l}</button>`).join('')}</div>
+  ${s.mode === 'existing' ? `<select id="i_exist" onchange="imp.src.existingId=this.value">${opt('', s.existingId, '選擇來源…')}${S.sources.map(x => opt(x.id, s.existingId, `${x.lesson}｜${x.title}（${SSTAT[x.status][1]}）`)).join('')}</select>`
+      : `<label>標題 *</label><input type="text" id="i_title" value="${esc(s.title)}" placeholder="例：日文課第7堂講義">
+  <div class="row"><div><label>課次</label><input type="text" id="i_lesson" list="lessonDL" value="${esc(s.lesson)}" placeholder="例：第7堂"></div>
+  <div><label>來源類型</label><select id="i_kind">${Object.entries(SKIND).map(([k, v]) => opt(k, s.kind, v)).join('')}</select></div></div>`}
+  ${m === 'url' ? `<label>網址 *</label><input type="url" id="i_url" value="${esc(s.url)}" placeholder="https://">` : ''}`;
+  let content = '';
+  if (m === 'paste' || m === 'url') {
+    content = `<label>${m === 'url' ? '網頁內容（從網頁選取複製後貼上）' : '內容'}</label><textarea id="i_text" style="min-height:160px" placeholder="${m === 'url' ? '瀏覽器無法替您直接讀取其他網站，請把網頁正文複製貼在這裡。' : '例：\n友達（ともだち）　朋友\n友達（と）映画を見に行きます。\n朋友也是學生。→ 友達も学生です。\n\n或貼上 ChatGPT 依提示詞整理好的 JSON'}">${esc(imp.text)}</textarea>`;
+  } else {
+    content = `<label>選擇檔案（PDF、JPG、PNG）</label><input type="file" id="i_file" accept="application/pdf,image/*" multiple onchange="impReadFiles(this.files)">
+    ${imp.progress ? `<div class="muted sec">${esc(imp.progress)}</div>` : ''}
+    ${imp.fileName ? fileReport() : ''}`;
+  }
+  const hasContent = imp.text.trim() || imp.images.length || imp.pages.length;
+  const aiBtn = S.settings.apiKey ? `<button class="btn" onclick="impAI()" ${imp.busy ? 'disabled' : ''}>${imp.busy ? '⏳ ' + esc(imp.progress || 'AI 處理中…') : '✨ AI 整理'}</button>` : `<button class="btn" onclick="impChat()">✨ 用 ChatGPT 整理</button>`;
+  return `${lessonDatalist()}<button class="btn sm ghost" onclick="impReset(true);render()">← 換匯入方式</button>
+  <div class="box">${srcSel}${content}</div>
+  ${m !== 'file' || hasContent ? `<div class="row">${m !== 'file' || imp.text ? `<button class="btn ghost" onclick="impLocal()">🔍 直接解析</button>` : ''}${aiBtn}</div>
+  <p class="muted small">「直接解析」不需要 AI，能辨識：單字（読み） 意思、含答案的填空句「友達（と）…」、「中文 → 日文」翻譯題，以及 JSON。其他內容會列為「未辨識」，不會被丟掉。</p>` : ''}
+  ${imp.chat ? chatBox() : ''}
+  ${imp.rows.length ? `<div class="box okbox row"><span>已暫存 ${imp.rows.length} 筆</span><button class="btn sm" style="flex:none" onclick="imp.step=3;render()">前往預覽 →</button></div>` : ''}`;
+}
+function fileReport() {
+  const txt = imp.pages.filter(p => p.hasText).length, img = imp.pages.filter(p => !p.hasText).length + imp.images.length;
+  return `<div class="sec"><b>${esc(imp.fileName)}</b>
+  ${imp.pages.length ? `<div class="muted">共 ${imp.pages.length} 頁：可讀取文字 ${txt} 頁、圖片頁 ${imp.pages.length - txt} 頁</div>` : ''}
+  ${img ? `<div class="warnline">⚠️ 有 ${img} 頁／張是圖片，沒有文字可以讀取，需要 AI 看圖辨識${S.settings.apiKey ? '（按「AI 整理」會一併處理）' : '（沒有 API 金鑰時，請把這個檔案直接上傳到 ChatGPT，再按「用 ChatGPT 整理」複製提示詞）'}。</div>` : ''}
+  ${txt ? `<label>抽出的文字（可修改）</label><textarea id="i_text" style="min-height:140px">${esc(imp.text)}</textarea>` : ''}
+  <div class="thumbs">${imp.pages.filter(p => !p.hasText).map(p => `<span class="th">${p.thumb ? `<img src="${p.thumb}">` : ''}<span>第${p.n}頁${imp.imgDone.has('p' + p.n) ? ' ✓' : ''}</span></span>`).join('')}${imp.images.map((im, i) => `<span class="th"><img src="${im.thumb}"><span>${esc(im.name)}${imp.imgDone.has('i' + i) ? ' ✓' : ''}</span></span>`).join('')}</div></div>`;
+}
+function chatBox() {
+  return `<div class="box ai"><b>用 ChatGPT 整理</b>
+  <ol class="small"><li>提示詞已複製${imp.chat.withFile ? '；<b>請同時把 PDF／圖片檔案上傳到 ChatGPT</b>' : ''}</li><li>貼到 ChatGPT 送出</li><li>把 ChatGPT 的回覆整段貼在下面</li></ol>
+  <textarea id="i_reply" placeholder="貼上 ChatGPT 的回覆"></textarea>
+  <div class="row" style="margin-top:8px"><button class="btn" onclick="impApplyReply()">加入預覽</button><button class="btn ghost" onclick="copyText(imp.chat.prompt);toast('已複製')">再複製一次</button></div></div>`;
+}
+function impSrcRead() {
+  const s = imp.src;
+  if ($('i_title')) s.title = $('i_title').value.trim();
+  if ($('i_lesson')) s.lesson = $('i_lesson').value.trim();
+  if ($('i_kind')) s.kind = $('i_kind').value;
+  if ($('i_url')) s.url = $('i_url').value.trim();
+  if ($('i_exist')) s.existingId = $('i_exist').value;
+  if ($('i_text')) imp.text = $('i_text').value;
+}
+function impCheckSrc() {
+  impSrcRead(); const s = imp.src;
+  if (s.mode === 'existing') { if (!s.existingId) { toast('請選擇要補入的來源'); return false; } return true; }
+  if (!s.title) { toast('請填寫標題'); return false; }
+  if (imp.method === 'url' && !/^https?:\/\/\S+\.\S+/.test(s.url)) { toast('請填寫正確的網址'); return false; }
+  return true;
+}
+function curSrcMeta() { const s = imp.src; if (s.mode === 'existing') { const x = srcById(s.existingId) || {}; return { title: x.title, lesson: x.lesson }; } return { title: s.title, lesson: s.lesson }; }
+
+let pdfjsP = null;
+function loadPdfJs() {
+  if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  return pdfjsP || (pdfjsP = new Promise((res, rej) => {
+    const sc = document.createElement('script'); sc.src = PDFJS + 'pdf.min.js';
+    sc.onload = () => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS + 'pdf.worker.min.js'; res(window.pdfjsLib); };
+    sc.onerror = () => { pdfjsP = null; rej(new Error('無法載入 PDF 讀取工具（需要網路連線）')); };
+    document.head.appendChild(sc);
+  }));
+}
+async function impReadFiles(files) {
+  impSrcRead();
+  imp.pages = []; imp.images = []; imp.text = ''; imp.imgDone = new Set(); imp.fileName = [...files].map(f => f.name).join('、');
+  if (!imp.src.title && files[0]) imp.src.title = files[0].name.replace(/\.[^.]+$/, '');
+  imp.src.file = imp.fileName;
+  const texts = [];
+  for (const f of files) {
+    try {
+      if (f.type === 'application/pdf' || /\.pdf$/i.test(f.name)) {
+        imp.progress = '讀取 PDF…'; render();
+        const lib = await loadPdfJs();
+        const doc = await lib.getDocument({ data: await f.arrayBuffer(), cMapUrl: PDFJS + 'cmaps/', cMapPacked: true }).promise;
+        for (let p = 1; p <= doc.numPages; p++) {
+          imp.progress = `讀取第 ${p}/${doc.numPages} 頁…`; render();
+          const pg = await doc.getPage(p), tc = await pg.getTextContent();
+          let lines = [], cur = '', lastY = null;
+          for (const it of tc.items) {
+            const y = it.transform ? it.transform[5] : null;
+            if (lastY !== null && y !== null && Math.abs(y - lastY) > 3) { lines.push(cur); cur = ''; }
+            cur += it.str; lastY = y;
+            if (it.hasEOL) { lines.push(cur); cur = ''; lastY = null; }
+          }
+          lines.push(cur);
+          const text = lines.map(x => x.trim()).filter(Boolean).join('\n');
+          const hasText = text.replace(/\s/g, '').length >= 15;
+          const page = { n: imp.pages.length + 1, text, hasText, pg };
+          if (!hasText) page.thumb = await renderPage(pg, 160, .6);
+          imp.pages.push(page);
+          if (hasText) texts.push(text);
+        }
+      } else if (f.type.startsWith('image/')) {
+        const url = await fileToDataURL(f);
+        imp.images.push({ name: f.name, full: await resizeImg(url, 1600, .85), thumb: await resizeImg(url, 160, .6) });
+      } else toast('不支援的檔案：' + f.name);
+    } catch (e) { toast('讀取失敗：' + e.message); }
+  }
+  imp.text = texts.join('\n\n');
+  imp.progress = ''; render();
+}
+async function renderPage(pg, maxW, q) {
+  const v0 = pg.getViewport({ scale: 1 }), sc = Math.min(3, maxW / v0.width), vp = pg.getViewport({ scale: sc });
+  const c = document.createElement('canvas'); c.width = vp.width; c.height = vp.height;
+  const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+  await pg.render({ canvasContext: ctx, viewport: vp }).promise;
+  return c.toDataURL('image/jpeg', q);
+}
+function fileToDataURL(f) { return new Promise((r, j) => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.onerror = j; fr.readAsDataURL(f); }); }
+function resizeImg(url, maxW, q) {
+  return new Promise((res, rej) => { const im = new Image(); im.onload = () => { const sc = Math.min(1, maxW / im.width); const c = document.createElement('canvas'); c.width = im.width * sc; c.height = im.height * sc; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(im, 0, 0, c.width, c.height); res(c.toDataURL('image/jpeg', q)); }; im.onerror = rej; im.src = url; });
+}
+
+/* --- local parser --- */
+function localParse(text) {
+  const items = [], questions = [], unrec = [];
+  const trimmed = text.trim();
+  if (/^[\[{]/.test(trimmed)) { try { const j = JSON.parse(trimmed); return fromJSON(Array.isArray(j) ? { items: j } : j); } catch (e) { } }
+  const lines = text.split(/\n/).map(s => s.replace(/[​ ﻿]/g, ' ').trim()).filter(Boolean);
+  for (const raw of lines) {
+    let l = raw.replace(/^(?:\d{1,3}|[①-⑳])[\.．、)）]?\s+/, '').replace(/^(?:\d{1,3})[\.．、)）]\s*/, '').replace(/^[●・\-*•]\s*/, '').trim();
+    let m;
+    if ((m = l.match(/^(.+?)\s*(?:→|=>|⇒)\s*(.+)$/)) && hasJa(m[2]) && !hasKana(m[1])) { questions.push({ kind: 'translate', zh: m[1].trim(), prompt: '翻成日文', answers: [m[2].trim()], category: '句型' }); continue; }
+    if ((m = l.match(/^([^\s（(]{1,15})[（(]([぀-ヿー・]+)[）)]\s*[:：\-–—]?\s*(.*)$/)) && !hasKana(m[3]) && (!m[3] || hasKanji(m[3])) && !/(ます|ません|です|か)$/.test(m[1])) {
+      items.push({ type: 'vocab', term: m[1], reading: m[2], meaning: m[3].trim() }); continue;
+    }
+    // trailing Chinese translation in parentheses
+    let zh = ''; const l0 = l;
+    // 去掉句子裡的振假名：漢字後面接 3 個以上平假名的括號（例：台湾人（たいわんじん））
+    l = l.replace(/([一-鿿々])[（(]([ぁ-ゟ]{3,})[）)]/g, '$1');
+    const tz =l.match(/[（(]([^（）()]*[一-鿿][^（）()]*)[）)]\s*$/);
+    if (tz && !hasKana(tz[1]) && hasKana(l.slice(0, tz.index))) { zh = tz[1].trim(); l = l.slice(0, tz.index).trim(); }
+    if (hasKana(l) && /[（(][^（）()]*[\/／][^（）()]*[）)]/.test(l)) {
+      const mm = l.match(/[（(]([^（）()]*[\/／][^（）()]*)[）)]/);
+      questions.push({ kind: 'choice', prompt: l.replace(mm[0], '（　）'), zh, options: mm[1].split(/[\/／]/).map(s => s.trim()), answers: [] }); continue;
+    }
+    const fills = [...l.matchAll(/[（(]([^（）()]{0,8})[）)]/g)];
+    if (fills.length && hasKana(l.replace(/[（(][^（）()]*[）)]/g, '')) && fills.every(f => !f[1].trim() || /^[぀-ヿ一-鿿々ー\/／\s　]+$/.test(f[1]) && !/[一-鿿]{3,}/.test(f[1]))) {
+      const answers = fills.map(f => f[1].replace(/[\s　]/g, ''));
+      questions.push({ kind: 'fill', prompt: l.replace(/[（(][^（）()]{0,8}[）)]/g, '（　）'), zh, answers: answers.every(Boolean) ? answers : [] }); continue;
+    }
+    if ((m = l0.match(/^([぀-ヿ一-鿿々ー～〜・]{1,12})\s+([^぀-ヿ]+)$/)) && hasKanji(m[2]) && !/^[～〜]/.test(m[1]) && !/(ます|ません|です)$/.test(m[1]) && (hasKana(m[1]) || /\s{2,}|\t/.test(raw))) {
+      items.push({ type: 'vocab', term: m[1], reading: '', meaning: m[2].trim() }); continue;
+    }
+    unrec.push(raw);
+  }
+  return { items, questions, unrec, warnings: [], complete: true };
+}
+function fromJSON(j) {
+  const items = (j.items || []).filter(x => x && (x.term || x.sentence)).map(x => Object.assign({}, x, { term: x.term || x.sentence }));
+  const questions = (j.questions || []).filter(Boolean);
+  return { items, questions, unrec: [], warnings: j.warnings || [], complete: j.complete !== false, ai: true };
+}
+function autoCat(kind, d) {
+  if (d.category && CATS.includes(d.category)) return d.category;
+  if (kind === 'item') { if (PARTICLES.includes(d.term)) return '助詞'; if (QWORDS.includes(d.term)) return '疑問詞'; return d.type === 'vocab' ? '單字' : '句型'; }
+  if (d.kind === 'fill' && d.answers.length && d.answers.every(a => a.split(/[\/／]/).every(x => PARTICLES.includes(x)))) return '助詞';
+  if (d.kind === 'choice' && d.options.every(o => PARTICLES.includes(o))) return '助詞';
+  return d.kind === 'translate' ? '句型' : '其他';
+}
+function addParsed(r, fromAI) {
+  const meta = curSrcMeta();
+  r.items.forEach(x => {
+    const d = { type: ITYPE[x.type] ? x.type : 'vocab', term: String(x.term || '').trim(), reading: String(x.reading || '').trim(), meaning: String(x.meaning || '').trim(), example: String(x.example || '').trim(), note: String(x.note || '').trim(), tags: Array.isArray(x.tags) ? x.tags : [], lesson: meta.lesson || '', aiAdded: Array.isArray(x.aiAdded) ? x.aiAdded : [] };
+    d.category = autoCat('item', Object.assign(d, { category: x.category }));
+    imp.rows.push({ kind: 'item', d, fromAI, include: true });
+  });
+  r.questions.forEach(x => {
+    const d = { kind: QKIND[x.kind] ? x.kind : 'translate', context: String(x.context || ''), zh: String(x.zh || '').trim(), prompt: String(x.prompt || '').trim(), options: Array.isArray(x.options) ? x.options.map(String) : [], answers: Array.isArray(x.answers) ? x.answers.map(String).filter(Boolean) : [], explain: String(x.explain || ''), answerFrom: x.answerFrom === 'ai' ? 'ai' : 'material', lesson: meta.lesson || '' };
+    d.category = autoCat('q', Object.assign(d, { category: x.category }));
+    imp.rows.push({ kind: 'q', d, fromAI, include: true });
+  });
+  // 作業題（沒有答案）與同一批的解答配對
+  const qrows = imp.rows.filter(x => x.kind === 'q' && x.d.kind !== 'translate');
+  qrows.filter(x => !x.d.answers.length && x.include).forEach(x => {
+    const key = qrows.find(y => y !== x && y.d.answers.length && norm(y.d.prompt) === norm(x.d.prompt));
+    if (key) { if (!key.d.zh && x.d.zh) key.d.zh = x.d.zh; if (!key.d.options.length && x.d.options.length) key.d.options = x.d.options; x.include = false; x.paired = true; }
+  });
+  imp.unrec.push(...(r.unrec || []));
+  imp.warnings.push(...(r.warnings || []));
+  if (r.complete === false) imp.aiIncomplete = true;
+  revalidateAll();
+}
+function impLocal() {
+  if (!impCheckSrc()) return;
+  if (!imp.text.trim()) return toast('沒有可以解析的文字');
+  const r = localParse(imp.text);
+  addParsed(r, !!r.ai);
+  if (!r.items.length && !r.questions.length) return toast('沒有辨識到內容，可改用 AI 整理'), render();
+  imp.step = 3; render(); scrollTo(0, 0);
+}
+async function impAI() {
+  if (!impCheckSrc()) return;
+  const meta = curSrcMeta();
+  const jobs = [];
+  if (imp.text.trim()) {
+    const parts = []; let cur = '';
+    imp.text.split('\n').forEach(line => { if (cur.length + line.length > 6000) { parts.push(cur); cur = ''; } cur += line + '\n'; });
+    if (cur.trim()) parts.push(cur);
+    parts.forEach((p, i) => jobs.push({ label: `文字 ${i + 1}/${parts.length}`, content: () => [{ type: 'text', text: extractPrompt(meta.title, meta.lesson, p) }] }));
+  }
+  imp.pages.filter(p => !p.hasText && !imp.imgDone.has('p' + p.n)).forEach(p => jobs.push({ key: 'p' + p.n, label: `圖片第 ${p.n} 頁`, content: async () => [{ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: (await renderPage(p.pg, 1600, .85)).split(',')[1] } }, { type: 'text', text: extractPrompt(meta.title, meta.lesson) }] }));
+  imp.images.forEach((im, i) => { if (!imp.imgDone.has('i' + i)) jobs.push({ key: 'i' + i, label: `圖片 ${im.name}`, content: async () => [{ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: im.full.split(',')[1] } }, { type: 'text', text: extractPrompt(meta.title, meta.lesson) }] }); });
+  if (!jobs.length) return toast('沒有需要處理的內容');
+  imp.busy = true; let ok = 0;
+  for (let i = 0; i < jobs.length; i++) {
+    imp.progress = `AI 處理中 ${i + 1}/${jobs.length}（${jobs[i].label}）`; render();
+    try { const r = fromJSON(parseJSON(await callClaude(await jobs[i].content()))); addParsed(r, true); if (jobs[i].key) imp.imgDone.add(jobs[i].key); ok++; }
+    catch (e) { imp.warnings.push(`${jobs[i].label} 處理失敗：${e.message}`); imp.aiIncomplete = true; }
+  }
+  imp.busy = false; imp.progress = '';
+  if (ok) { imp.step = 3; scrollTo(0, 0); } else toast('AI 處理失敗，請檢查金鑰或網路');
+  render();
+}
+async function impChat() {
+  if (!impCheckSrc()) return;
+  const meta = curSrcMeta();
+  const withFile = imp.method === 'file' && (imp.images.length || imp.pages.some(p => !p.hasText));
+  const prompt = extractPrompt(meta.title, meta.lesson, withFile ? '' : imp.text);
+  await copyText(prompt);
+  imp.chat = { prompt, withFile }; render(); toast('提示詞已複製');
+}
+function impApplyReply() {
+  const v = $('i_reply').value;
+  try { addParsed(fromJSON(parseJSON(v)), true); if (imp.chat.withFile) { imp.pages.forEach(p => !p.hasText && imp.imgDone.add('p' + p.n)); imp.images.forEach((x, i) => imp.imgDone.add('i' + i)); } imp.chat = null; imp.step = 3; render(); scrollTo(0, 0); }
+  catch (e) { toast('無法讀取回覆：' + e.message); }
+}
+
+/* --- validation & dedupe --- */
+function validateItem(d) {
+  const errors = [], warns = [];
+  if (!d.term) errors.push('缺少單字／句型');
+  if (d.type === 'vocab' && !d.meaning) warns.push('沒有中文意思');
+  if (d.reading && !/^[぀-ヿー・\s～〜]*$/.test(d.reading)) errors.push('讀音只能是假名');
+  if (d.type === 'vocab' && hasKanji(d.term) && !d.reading) warns.push('含漢字但沒有讀音');
+  return { errors, warns };
+}
+function validateQuestion(d) {
+  const errors = [], warns = [];
+  const ans = Array.isArray(d.answers) ? d.answers : [];
+  if (d.kind === 'translate') { if (!d.zh) errors.push('缺少中文題目'); }
+  else if (!d.prompt) errors.push('缺少題目');
+  if (!ans.length) errors.push('缺少答案（無法批改）');
+  if (d.kind === 'fill') { const n = (d.prompt.match(BLANK) || []).length; if (!n) errors.push('題目裡沒有空格（　）'); else if (ans.length && n !== ans.length) errors.push(`空格 ${n} 個，但答案 ${ans.length} 個`); }
+  if (d.kind === 'choice') { if ((d.options || []).length < 2) errors.push('選項少於 2 個'); else if (ans.length && !d.options.includes(ans[0])) errors.push('答案不在選項中'); if ((d.prompt.match(BLANK) || []).length !== 1) warns.push('題目應有一個空格（　）'); }
+  if (d.answerFrom === 'ai') warns.push('答案由 AI 提供，非教材解答');
+  return { errors, warns };
+}
+function itemKey(d) { return d.type + '|' + norm(d.term) + '|' + kana(d.reading || ''); }
+function qText(d) { return d.kind === 'translate' ? (d.context ? d.context.slice(0, 12) + '… ' : '') + d.zh : d.prompt; }
+function qKey(d) { return d.kind === 'translate' ? 't|' + norm(d.zh) + '|' + norm(d.context || '') : 'p|' + norm(d.prompt); }
+function findDup(row, idx) {
+  if (row.kind === 'item') {
+    const k = itemKey(row.d), t = norm(row.d.term);
+    for (let i = 0; i < idx; i++) { const r = imp.rows[i]; if (r.kind === 'item' && r.include && itemKey(r.d) === k) return { type: 'batch', label: '與本次匯入的另一筆重複' }; }
+    let x = S.items.find(i => itemKey(i) === k); if (x) return { type: 'exact', id: x.id, label: `已存在：${x.term}${x.reading ? '（' + x.reading + '）' : ''} ${x.meaning}｜${x.lesson || ''}` };
+    x = S.items.find(i => norm(i.term) === t || (row.d.type !== 'vocab' && sim(i.term + i.meaning, row.d.term + row.d.meaning) > .7));
+    if (x) return { type: 'similar', id: x.id, label: `相似：${x.term}${x.reading ? '（' + x.reading + '）' : ''} ${x.meaning}｜${x.lesson || ''}` };
+  } else {
+    const k = qKey(row.d), t = qText(row.d);
+    for (let i = 0; i < idx; i++) { const r = imp.rows[i]; if (r.kind === 'q' && r.include && qKey(r.d) === k) return { type: 'batch', label: '與本次匯入的另一筆重複' }; }
+    let x = S.questions.find(q => qKey(q) === k); if (x) return { type: 'exact', id: x.id, label: `已存在：${qText(x)}｜${x.lesson || ''}` };
+    x = S.questions.find(q => (q.kind === 'translate') === (row.d.kind === 'translate') && sim(qText(q), t) > .75);
+    if (x) return { type: 'similar', id: x.id, label: `相似：${qText(x)}｜${x.lesson || ''}` };
+  }
+  return null;
+}
+function revalidateAll() {
+  imp.rows.forEach((r, i) => {
+    const v = r.kind === 'item' ? validateItem(r.d) : validateQuestion(r.d);
+    r.errors = v.errors; r.warns = v.warns;
+    const prevDup = r.dup && r.dup.type;
+    r.dup = findDup(r, i);
+    if (!r.action || (r.dup && r.dup.type) !== prevDup) r.action = !r.dup ? 'new' : r.dup.type === 'similar' ? 'new' : 'skip';
+    if (!r.dup && r.action !== 'new') r.action = 'new';
+  });
+}
+function rowStatus(r) {
+  if (!r.include) return ['off', r.paired ? '已和解答合併' : '不匯入'];
+  if (r.errors.length) return ['err', '需修正'];
+  if (r.dup && r.action === 'skip') return ['skip', '略過（重複）'];
+  if (r.dup && r.action === 'merge') return ['merge', '合併'];
+  if (r.dup) return ['sim', '新增（相似）'];
+  return ['ok', '新增'];
+}
+function vPreview() {
+  const cnt = { ok: 0, sim: 0, skip: 0, merge: 0, err: 0, off: 0 };
+  imp.rows.forEach(r => cnt[rowStatus(r)[0]]++);
+  const imgLeft = imp.pages.filter(p => !p.hasText && !imp.imgDone.has('p' + p.n)).length + imp.images.filter((x, i) => !imp.imgDone.has('i' + i)).length;
+  const partial = imgLeft > 0 || imp.unrec.length > 0;
+  const suggested = partial ? 'partial' : (imp.aiIncomplete || imp.warnings.length || imp.rows.some(r => r.fromAI)) ? 'unverified' : 'complete';
+  if (!imp.status) imp.status = suggested;
+  const meta = curSrcMeta();
+  return `<div class="row" style="margin-bottom:10px"><button class="btn sm ghost" style="flex:none" onclick="imp.step=2;render()">← 加入更多</button><span class="muted" style="text-align:right">${esc(meta.title || '')}${meta.lesson ? '｜' + esc(meta.lesson) : ''}</span></div>
+  <div class="stats3"><div class="stat"><b>${cnt.ok + cnt.sim}</b><span>新增</span></div><div class="stat"><b>${cnt.skip + cnt.merge}</b><span>重複（略過／合併）</span></div><div class="stat ${cnt.err ? 'errs' : ''}"><b>${cnt.err}</b><span>需修正</span></div></div>
+  ${imgLeft ? `<div class="box warnbox">⚠️ 還有 ${imgLeft} 頁／張圖片沒有辨識，這次匯入<b>不完整</b>。</div>` : ''}
+  ${imp.warnings.length ? `<div class="box warnbox"><b>AI 提醒</b>${imp.warnings.map(w => `<div class="small">・${esc(w)}</div>`).join('')}</div>` : ''}
+  ${imp.unrec.length ? `<details class="box warnbox"><summary>⚠️ 有 ${imp.unrec.length} 行沒有辨識（點開查看）</summary><pre class="small pre">${esc(imp.unrec.join('\n'))}</pre><button class="btn sm ghost" onclick="imp.text=imp.unrec.join('\\n');imp.unrec=[];imp.step=2;render()">把這些行送去 AI 整理</button></details>` : ''}
+  <p class="muted small">格式檢查通過不代表內容一定正確，標示「AI」的欄位請對照原始教材。修改欄位後按其他地方會重新檢查。</p>
+  ${imp.rows.map((r, i) => previewRow(r, i)).join('')}
+  <div class="box"><label style="margin-top:0">這份來源的匯入狀態</label><select onchange="imp.status=this.value">${Object.entries(SSTAT).filter(([k]) => k !== 'pending').map(([k, v]) => opt(k, imp.status, v.join(' ') + (k === suggested ? '（建議）' : ''))).join('')}</select>
+  <button class="btn full" style="margin-top:12px" onclick="impSave()" ${cnt.ok + cnt.sim + cnt.merge ? '' : 'disabled'}>💾 確認存入（${cnt.ok + cnt.sim + cnt.merge} 筆）</button>
+  <button class="btn ghost full" style="margin-top:8px" onclick="if(confirm('放棄這次匯入？'))impReset(),render()">放棄</button></div>`;
+}
+function previewRow(r, i) {
+  const [st, sl] = rowStatus(r), d = r.d;
+  const f = (k, l, ta) => `<label>${l}</label>${ta ? `<textarea data-i="${i}" data-k="${k}" onchange="rowEdit(this)">${esc(Array.isArray(d[k]) ? d[k].join('\n') : d[k])}</textarea>` : `<input type="text" data-i="${i}" data-k="${k}" value="${esc(Array.isArray(d[k]) ? d[k].join('、') : d[k])}" onchange="rowEdit(this)">`}`;
+  const sel = (k, l, opts) => `<div><label>${l}</label><select data-i="${i}" data-k="${k}" onchange="rowEdit(this)">${opts.map(([a, b]) => opt(a, d[k], b)).join('')}</select></div>`;
+  let fields;
+  if (r.kind === 'item') fields = `<div class="row">${sel('type', '類型', Object.entries(ITYPE))}${sel('category', '類別', CATS.map(c => [c, c]))}</div><div class="row"><div>${f('term', '單字／句型')}</div><div>${f('reading', '讀音')}</div></div>${f('meaning', '意思', true)}${d.example || r.fromAI ? f('example', '例句', true) : ''}${d.note ? f('note', '備註', true) : ''}`;
+  else fields = `<div class="row">${sel('kind', '題型', Object.entries(QKIND))}${sel('category', '類別', CATS.map(c => [c, c]))}</div>${d.context ? f('context', '短文', true) : ''}${d.kind !== 'translate' ? f('prompt', '題目', true) : ''}${f('zh', '中文')}${d.kind === 'choice' ? f('options', '選項（、分隔）') : ''}${f('answers', '答案（每行一個）', true)}${d.explain ? f('explain', '解說', true) : ''}`;
+  const head = r.kind === 'item' ? `${ITYPE[d.type]}｜${esc(d.term)}${d.reading ? '（' + esc(d.reading) + '）' : ''} <span class="muted">${esc(d.meaning.slice(0, 30))}</span>` : `${QKIND[d.kind]}｜${esc(d.kind === 'translate' ? d.zh : d.prompt)} <span class="muted">${esc(d.answers.join('、').slice(0, 30))}</span>`;
+  return `<details class="prow st-${st}" ${st === 'err' ? 'open' : ''}><summary><span class="pst">${sl}</span>${head}</summary><div class="body">
+  ${r.errors.map(e => `<div class="errline">✕ ${esc(e)}</div>`).join('')}${r.warns.map(e => `<div class="warnline">△ ${esc(e)}</div>`).join('')}
+  ${d.aiAdded && d.aiAdded.length ? `<div class="warnline">AI 補充欄位：${esc(d.aiAdded.join('、'))}</div>` : ''}
+  ${r.dup ? `<div class="dupline">${r.dup.type === 'similar' ? '≈' : '='} ${esc(r.dup.label)}${r.dup.type !== 'batch' ? `<div class="seg sm">${[['skip', '略過'], ['merge', '合併'], ['new', '另存一筆']].map(([k, l]) => `<button class="${r.action === k ? 'on' : ''}" onclick="imp.rows[${i}].action='${k}';render()">${l}</button>`).join('')}</div>` : ''}</div>` : ''}
+  ${fields}
+  <label class="ck" style="margin-top:10px"><input type="checkbox" ${r.include ? 'checked' : ''} onchange="imp.rows[${i}].include=this.checked;revalidateAll();render()"> 匯入這一筆</label></div></details>`;
+}
+function rowEdit(el) {
+  const r = imp.rows[+el.dataset.i], k = el.dataset.k;
+  let v = el.value;
+  if (k === 'answers') v = v.split('\n').map(s => s.trim()).filter(Boolean);
+  else if (k === 'options') v = v.split(/[、,，\n]/).map(s => s.trim()).filter(Boolean);
+  else v = v.trim();
+  r.d[k] = v; if (r.d.aiAdded && r.d.aiAdded.includes(k)) r.d.aiAdded = r.d.aiAdded.filter(x => x !== k);
+  revalidateAll(); const y = scrollY; render(); scrollTo(0, y);
+  const det = document.querySelectorAll('.prow')[+el.dataset.i]; if (det) det.open = true;
+}
+function impSave() {
+  const now = Date.now(), s = imp.src;
+  let src;
+  if (s.mode === 'existing') { src = srcById(s.existingId); src.status = imp.status; src.updated = now; if (imp.fileName && !String(src.file || '').includes(imp.fileName)) src.file = [src.file, imp.fileName].filter(Boolean).join('、'); }
+  else { src = { id: uid(), kind: s.kind, title: s.title, lesson: s.lesson, url: s.url, file: imp.fileName, status: imp.status, note: '', created: now }; S.sources.push(src); }
+  const notes = [];
+  const imgLeft = imp.pages.filter(p => !p.hasText && !imp.imgDone.has('p' + p.n)).length + imp.images.filter((x, i) => !imp.imgDone.has('i' + i)).length;
+  if (imgLeft) notes.push(`${new Date().toLocaleDateString()}：${imgLeft} 頁圖片未辨識`);
+  if (imp.unrec.length) notes.push(`${imp.unrec.length} 行未辨識`);
+  if (notes.length) src.note = [src.note, ...notes].filter(Boolean).join('\n');
+  let n = 0;
+  imp.rows.forEach(r => {
+    const st = rowStatus(r)[0]; if (!['ok', 'sim', 'merge'].includes(st)) return;
+    const d = r.d, lesson = d.lesson || src.lesson || '';
+    if (st === 'merge') {
+      const t = r.kind === 'item' ? S.items.find(x => x.id === r.dup.id) : S.questions.find(x => x.id === r.dup.id);
+      if (!t) return;
+      Object.keys(d).forEach(k => { if (Array.isArray(d[k])) { if (k === 'answers' || k === 'tags') t[k] = [...new Set([...(t[k] || []), ...d[k]])]; } else if (d[k] && !String(t[k] || '').trim()) t[k] = d[k]; });
+      t.updated = now; n++; return;
+    }
+    const kind = s.mode === 'existing' ? src.kind : s.kind;
+    const base = { id: uid(), lesson, sourceId: src.id, origin: kind === 'self' ? 'mine' : kind === 'ai' ? 'ai' : 'teacher', created: now, updated: now };
+    if (r.kind === 'item') S.items.push(Object.assign({ example: '', note: '', tags: [], aiAdded: [] }, d, base));
+    else S.questions.push(Object.assign({}, d, base));
+    n++;
+  });
+  save();
+  const l = src.lesson; impReset(); toast(`已存入 ${n} 筆`);
+  ui.tab = 'home'; ui.lesson = l || null; render(); scrollTo(0, 0);
+}
+
+/* ===================== 設定、備份、功能狀態 ===================== */
+function vSettings() {
+  const st = S.settings, bk = daysSince(st.lastBackup);
+  return `<button class="btn sm ghost" onclick="ui.view=null;render()">← 返回</button>
+  <div class="box"><h2>✨ AI 設定</h2>
+  <div class="muted small">沒有金鑰也能用：需要 AI 的地方會複製提示詞，貼到 ChatGPT 後再把回覆貼回來。填入 Claude API 金鑰後可一鍵整理，並能直接辨識圖片教材。金鑰只存在這個瀏覽器。</div>
+  <label>Claude API 金鑰</label><input type="password" id="s_key" value="${esc(st.apiKey)}" placeholder="sk-ant-…" autocomplete="off">
+  <label>模型</label><input type="text" id="s_model" value="${esc(st.model)}">
+  <button class="btn sm" style="margin-top:10px" onclick="S.settings.apiKey=$('s_key').value.trim();S.settings.model=$('s_model').value.trim()||'claude-sonnet-5-5';save();toast('已儲存')">儲存</button></div>
+  <div class="box"><h2>💾 備份與還原</h2>
+  <div class="muted small">所有資料只存在這個瀏覽器。清除瀏覽器資料、換手機都會遺失，請定期匯出。${bk === null ? '<b>尚未備份過。</b>' : `上次備份：${bk} 天前。`}</div>
+  <div class="row" style="margin-top:10px"><button class="btn" onclick="exportData()">⬇️ 匯出備份</button><label class="btn ghost filebtn">⬆️ 還原備份<input type="file" accept=".json,application/json" onchange="importBackup(this)"></label></div>
+  <div class="muted small" style="margin-top:6px">還原時會合併：已存在的資料保留，備份中新的資料加入。</div></div>
+  <div class="box"><h2>📚 預載教材</h2><div class="muted small">如果誤刪了預載的第1–6堂內容，可以重新補回（已存在的不會重複）。</div>
+  <button class="btn sm ghost" style="margin-top:8px" onclick="const n=applySeed(true);toast(n?'補回 '+n+' 筆':'沒有缺少的內容');render()">補回預載教材</button></div>
+  <div class="box"><h2>📊 資料統計</h2><div class="muted">來源 ${S.sources.length}・單字／文法 ${S.items.length}・題目 ${S.questions.length}・作答紀錄 ${S.attempts.length}・錯題 ${S.mistakes.length}・家教問題 ${S.tutor.length}</div></div>
+  <button class="btn ghost full" onclick="openView('status')">🧭 功能開發狀態</button>
+  <button class="btn bad full" style="margin-top:12px" onclick="wipe()">清除全部資料</button>`;
+}
+function vStatus() {
+  const L = (t, a) => `<div class="box"><h2>${t}</h2>${a.map(x => `<div class="stline">${x}</div>`).join('')}</div>`;
+  return `<button class="btn sm ghost" onclick="ui.view='settings';render()">← 返回</button>
+  ${L('✅ 已實作', ['三種匯入：貼上文字、PDF／圖片、網址來源', 'PDF 自動判斷文字頁與圖片頁，並提示「內容不完整」', '匯入預覽：欄位驗證、錯誤提示、可直接修改', '自動去重：完全相同自動略過；相似內容讓你選略過／合併／另存', '自動分類：AI 判斷，或依助詞與疑問詞規則判斷；可手動修改', '分批補入既有來源', '每筆資料連回課次與來源，標示「教材／我的筆記／AI 補充」', '可填答的練習：填空（輸入框在句子裡）、選擇、翻譯、單字讀音、中翻日', '送出後才顯示答案與解說', '答錯自動收進錯題本，連對 2 次算已克服', '弱點分析：依類別統計錯題與正確率', '家教討論清單：從題目、錯題、單字一鍵加入，可複製清單、記錄老師回答', '備份匯出與還原（合併）', '日文朗讀', '預載第1–6堂可讀取的教材內容'])}
+  ${L('⚠️ 部分實作', ['網址匯入：只記錄網址；瀏覽器限制無法自動讀取其他網站，內容需貼上或存成 PDF', '翻譯題批改：與參考答案完全相同才自動判對，其他情況由你自評或用 AI 批改（需金鑰）', '圖片教材辨識：需 Claude API 金鑰；沒有金鑰時要手動上傳到 ChatGPT', '預載教材：第1–2堂主講義、第3堂量詞表與年齡表是圖片，尚未匯入'])}
+  ${L('⏳ 待開發', ['間隔複習排程（依記憶曲線安排複習日期）', '每週測驗、模擬題與成績紀錄', 'JLPT 級數標記與篩選', '動詞變化專項自動出題', '多裝置同步（目前只存在單一瀏覽器）'])}`;
+}
+function exportData() {
+  S.settings.lastBackup = Date.now(); save();
+  const data = JSON.parse(JSON.stringify(S)); data.settings.apiKey = '';
+  const b = new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = '日本語ノート備份-' + new Date().toISOString().slice(0, 10) + '.json'; document.body.appendChild(a); a.click(); setTimeout(() => { a.remove(); URL.revokeObjectURL(a.href); }, 1000);
+  toast('已匯出（不含 API 金鑰）'); render();
+}
+function importBackup(inp) {
+  const f = inp.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const d = JSON.parse(r.result); if (!d || d.v !== 2) throw new Error('不是日本語ノート的備份檔');
+      let n = 0;
+      ['sources', 'items', 'questions', 'mistakes', 'tutor'].forEach(k => { const ids = new Set(S[k].map(x => x.id)); (d[k] || []).forEach(x => { if (x && x.id && !ids.has(x.id)) { S[k].push(x); n++; } }); });
+      const ak = new Set(S.attempts.map(a => a.ref + a.at)); (d.attempts || []).forEach(a => { if (!ak.has(a.ref + a.at)) S.attempts.push(a); });
+      save(); render(); toast(`已還原 ${n} 筆新資料`);
+    } catch (e) { toast('還原失敗：' + e.message); }
+  };
+  r.readAsText(f);
+}
+function wipe() {
+  if (!confirm('確定清除全部資料？建議先匯出備份。')) return;
+  if (prompt('請輸入「清除」確認') !== '清除') return;
+  const key = S.settings.apiKey; S = blank(); S.settings.apiKey = key; S.settings.migratedV1 = true; S.seedVersion = SEED_VERSION; save(); ui.view = null; go('home');
+}
+
+/* ---------- boot ---------- */
+(function boot() {
+  const fresh = !localStorage.getItem(KEY);
+  const n = applySeed(false), m = migrateV1();
+  render();
+  if (fresh && n) setTimeout(() => toast(`已載入第1–6堂教材（${n} 筆）`), 300);
+  if (m) setTimeout(() => toast(`已從舊版錯題本轉入 ${m} 筆日文資料`), 3000);
+})();
+
+</script>
+</body>
+</html>
